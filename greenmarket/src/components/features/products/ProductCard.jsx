@@ -7,10 +7,11 @@ export default function ProductCard({
     title = 'Produit 1',
     price = 'E',
     description = 'Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et',
-    promotion = false,
+    promotion = true,
     maxTitleLength = 25,
     maxDescriptionLength = 34,
     buttonText = 'Voir plus',
+    verticale = false,
 }) {
     const truncatedTitle =
         title.length > maxTitleLength
@@ -23,17 +24,35 @@ export default function ProductCard({
             : description;
 
     return (
-        <div className="product-card flex gap-6 w-full max-w-[350px]">
-            <div className="image__holder relative size-40 w-1/2 bg-white rounded-r-[12px] outline-2 outline-[#B3E479]">
+        <div
+            className={`product-card flex ${
+                verticale ? 'flex-col gap-3' : 'gap-6'
+            } w-full max-w-[350px]`}
+        >
+            <div
+                className={`image__holder relative size-40 w-1/2 bg-white ${
+                    verticale ? 'rounded-b-[12px]' : 'rounded-r-[12px]'
+                } outline-2 outline-[#B3E479]`}
+            >
                 <img
                     src={imageSrc}
                     alt={imageAlt}
                     className="w-full h-full object-contain"
                 />
 
-                <div className="promotion-rectangle flex items-center absolute top-0 left-0 h-full w-6 bg-[#B3E479] px-1">
+                <div
+                    className={`promotion-rectangle flex items-center absolute top-0 left-0 ${
+                        verticale ? 'h-6 w-full' : 'h-full w-6'
+                    } bg-[#B3E479] px-1`}
+                >
                     {promotion && (
-                        <p className="-rotate-90 text-[12px] tracking-[8px] absolute left-0 top-4/5 w-6">
+                        <p
+                            className={`${
+                                verticale
+                                    ? 'text-center w-full'
+                                    : '-rotate-90 w-6 left-0 top-4/5'
+                            } text-[12px] tracking-[8px] absolute`}
+                        >
                             PROMOTION
                         </p>
                     )}
@@ -60,7 +79,9 @@ export default function ProductCard({
 
                 <a
                     href={`/products/${id}`}
-                    className="bg-[#B3E479] w-fit flex items-center rounded-[16px] p-2 text-[16px] gap-x-2 drop-shadow-md"
+                    className={`bg-[#B3E479] w-fit flex items-center rounded-[16px] p-2 text-[16px] gap-x-2 drop-shadow-md ${
+                        verticale && 'mt-3'
+                    }`}
                 >
                     {buttonText}
                     <LuArrowRight className="size-6" />
