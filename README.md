@@ -1,6 +1,6 @@
 # 🌱 GreenMarket
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed-Vercel-black?style=for-the-badge&logo=vercel)](VOTRE_LIEN_VERCEL)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed-Vercel-black?style=for-the-badge&logo=vercel)]([VOTRE_LIEN_VERCEL](https://green-market-tau.vercel.app))
 [![Figma](https://img.shields.io/badge/Figma-Design-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://urlr.me/rVRZQ4)
 [![Lighthouse](https://img.shields.io/badge/Lighthouse-80+-00C853?style=for-the-badge&logo=lighthouse&logoColor=white)](./docs/lighthouse/)
 
@@ -8,7 +8,7 @@
 
 _Cosmétiques naturels · Vêtements recyclés · Accessoires zéro déchet_
 
-[🌐 Démo](VOTRE_LIEN_VERCEL) • [🎨 Maquette](https://urlr.me/rVRZQ4) • [📊 Lighthouse](./docs/lighthouse/)
+[🌐 Démo](https://green-market-tau.vercel.app) • [🎨 Maquette](https://urlr.me/rVRZQ4) • [📊 Lighthouse](./docs/lighthouse/)
 
 ---
 
