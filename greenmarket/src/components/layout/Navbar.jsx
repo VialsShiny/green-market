@@ -7,9 +7,11 @@ export default function Navbar() {
     const menuItems = {Home: '/', Products: '/products', Contact: '/contact'};
 
     return (
-        <nav className="w-auto mx-3 px-6 py-3 border-2 border-white border-t-0 rounded-b-[16px] bg-gradient-to-r from-[#DB4D72] to-[#E47995] text-[#FBE9ED]">
+        <nav className="fixed left-1/2 transform -translate-x-1/2 px-6 py-3 border-2 border-white border-t-0 rounded-b-[16px] bg-gradient-to-r from-[#DB4D72] to-[#E47995] text-[#FBE9ED] z-50 shadow-lg">
             <div className="flex items-center justify-between">
-                <h1 className="text-[50px] font-bold">G.M.</h1>
+                <strong className="text-[50px] font-bold nav-title">
+                    G.M.
+                </strong>
                 <LuMenu
                     className="text-[32px] cursor-pointer"
                     onClick={() => setOpen(!open)}
