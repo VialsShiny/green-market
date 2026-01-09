@@ -37,7 +37,15 @@ export default function ProductCard({
                 <img
                     src={imageSrc}
                     alt={imageAlt}
+                    loading="lazy"
+                    decoding="async"
+                    width="160"
+                    height="160"
+                    sizes="(min-width: 1024px) 160px, 40vw"
                     className="w-full h-full object-contain"
+                    onError={(e) => {
+                        e.currentTarget.src = '/placeholder-product.png';
+                    }}
                 />
 
                 <div
@@ -66,7 +74,7 @@ export default function ProductCard({
             <div className="info flex flex-col justify-evenly text-[#212529] w-1/2">
                 <div className="text__wrap">
                     <strong
-                        className="font-normale text-[20px] block overflow-hidden"
+                        className="font-normal text-[20px] block overflow-hidden"
                         title={title}
                     >
                         {truncatedTitle}
