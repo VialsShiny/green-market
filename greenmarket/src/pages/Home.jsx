@@ -22,46 +22,124 @@ export default function Home() {
         'Matières recyclable',
     ];
 
+    const scrollToProducts = () => {
+        const el = document.getElementById('products');
+        if (el) {
+            el.scrollIntoView({behavior: 'smooth', block: 'start'});
+            // Move focus so keyboard users are placed into the product list
+            el.focus({preventScroll: true});
+        }
+    };
+
     return (
         <>
-            <section className="landing h-screen w-full flex items-center justify-center">
-                <div className="text-wrapper flex flex-col gap-6 px-6 text-center">
+            <a
+                href="#main"
+                className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-white focus:text-black focus:px-3 focus:py-2 rounded"
+                onClick={(e) => {
+                    // allow normal anchor behavior but also focus target
+                    const target = document.getElementById('main');
+                    if (target) {
+                        e.preventDefault();
+                        target.focus();
+                    }
+                }}
+            >
+                Aller au contenu
+            </a>
+
+            <section
+                className="landing h-screen w-full flex items-center justify-center"
+                aria-labelledby="home-title"
+            >
+                <div
+                    className="text-wrapper flex flex-col gap-6 px-6 text-center"
+                    id="main"
+                    tabIndex={-1}
+                >
                     <div className="flex flex-col gap-0">
-                        <h1 className="text-[82px] text-[#DB4D72]">
+                        <h1
+                            id="home-title"
+                            className="text-[82px] text-[#DB4D72]"
+                        >
                             Green Market
                         </h1>
-                        <p className="description text-[19px] text-[#E47995]">
-                            Lorem ipsum dolor sit amet consectetur adipiscing
-                            elit Ut et massa mi..
+
+                        <p className="description text-[19px] text-[#E47995] mt-4">
+                            Consommez responsable : produits durables, locaux et
+                            tracés pour un quotidien plus vert.
                         </p>
                     </div>
+
                     <div className="see-more__wrap flex self-center items-center gap-x-3 text-[#DB4D72]">
-                        <IoArrowDown className="size-8 bg-[#F8F9FA] rounded-[4px] outline-1 outline-[#DB4D72] hover:translate-y-1 transition-all duration-200 ease-out" />
-                        <p className="text-xl">VOIR LES PRODUITS</p>
+                        <button
+                            type="button"
+                            onClick={scrollToProducts}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    scrollToProducts();
+                                }
+                            }}
+                            aria-controls="products"
+                            aria-label="Voir les produits phares"
+                            className="flex items-center gap-3 focus:outline focus:outline-2 focus:outline-[#DB4D72] bg-transparent"
+                        >
+                            <IoArrowDown className="size-8 bg-[#F8F9FA] rounded-[4px] outline-1 outline-[#DB4D72] hover:translate-y-1 transition-all duration-200 ease-out" />
+                            <span className="text-xl">VOIR LES PRODUITS</span>
+                        </button>
                     </div>
                 </div>
             </section>
 
-            <section className="our-products bg-[#90E99C] p-[24px]">
-                <div className="w-full p-[12px] pb-6  flex flex-col rounded-[12px] outline-2 outline-[#F8F9FA] bg-[#4DDB60]">
-                    <h2 className="title text-[4rem] mb-6">Produits Phares</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <section
+                id="products"
+                className="our-products bg-[#90E99C] p-[24px]"
+                aria-labelledby="products-heading"
+            >
+                <div className="w-full p-[12px] pb-6 flex flex-col rounded-[12px] outline-2 outline-[#F8F9FA] bg-[#4DDB60]">
+                    <h2
+                        id="products-heading"
+                        className="title text-[4rem] mb-6"
+                    >
+                        Produits Phares
+                    </h2>
+
+                    <div
+                        role="list"
+                        aria-label="Liste des produits phares"
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                    >
                         {products.map((product) => (
-                            <ProductCard
+                            <article
                                 key={product.id}
-                                id={product.id}
-                                imageSrc={product.image}
-                                imageAlt={product.title}
-                                price={product.price}
-                                title={product.title}
-                                description={product.description}
-                                // promotion={product.price > 50} Exemple
-                            />
+                                role="listitem"
+                                tabIndex={0}
+                                aria-labelledby={`product-title-${product.id}`}
+                                className="focus:outline focus:outline-2 focus:outline-[#DB4D72] rounded"
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        window.location.href = `/products/${product.id}`;
+                                    }
+                                }}
+                            >
+                                <ProductCard
+                                    key={product.id}
+                                    id={product.id}
+                                    imageSrc={product.image}
+                                    imageAlt={product.title}
+                                    price={product.price}
+                                    title={product.title}
+                                    description={product.description}
+                                    // promotion={product.price > 50} Exemple
+                                />
+                            </article>
                         ))}
                     </div>
+
                     <a
                         href="/products"
-                        className="bg-[#D3F6D7] w-fit flex self-center items-center rounded-[16px] p-2 mt-8 text-[20px] gap-x-2 drop-shadow-md"
+                        className="bg-[#D3F6D7] w-fit flex self-center items-center rounded-[16px] p-2 mt-8 text-[20px] gap-x-2 drop-shadow-md focus:outline focus:outline-2 focus:outline-[#DB4D72]"
                     >
                         Tous nos produits juste là
                         <LuArrowRight className="size-6" />
@@ -79,6 +157,7 @@ export default function Home() {
                             WebkitMaskImage:
                                 'linear-gradient(to bottom, transparent 0%, black 30%, black 100%)',
                         }}
+                        aria-hidden="true"
                     >
                         {Array(50)
                             .fill('VALEURS')
@@ -112,8 +191,15 @@ export default function Home() {
                     <strong className="title text-[2.5rem] text-[#F8F9FA]">
                         Les avis de nos clients
                     </strong>
-                    <div className="quote__container flex gap-x-6 overflow-scroll">
-                        <div className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]">
+                    <div
+                        className="quote__container flex gap-x-6 overflow-scroll"
+                        aria-label="Témoignages clients"
+                    >
+                        <div
+                            className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]"
+                            role="group"
+                            aria-labelledby="quote-1-author"
+                        >
                             <div className="absolute top-4 left-4 text-4xl font-bold select-none">
                                 <LuQuote />
                             </div>
@@ -125,10 +211,15 @@ export default function Home() {
 
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-[#DB4D72]" />
-                                <span>N. User</span>
+                                <span id="quote-1-author">N. User</span>
                             </div>
                         </div>
-                        <div className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]">
+
+                        <div
+                            className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]"
+                            role="group"
+                            aria-labelledby="quote-2-author"
+                        >
                             <div className="absolute top-4 left-4 text-4xl font-bold select-none">
                                 <LuQuote />
                             </div>
@@ -140,10 +231,15 @@ export default function Home() {
 
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-[#DB4D72]" />
-                                <span>N. User</span>
+                                <span id="quote-2-author">N. User</span>
                             </div>
                         </div>
-                        <div className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]">
+
+                        <div
+                            className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]"
+                            role="group"
+                            aria-labelledby="quote-3-author"
+                        >
                             <div className="absolute top-4 left-4 text-4xl font-bold select-none">
                                 <LuQuote />
                             </div>
@@ -155,7 +251,7 @@ export default function Home() {
 
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-[#DB4D72]" />
-                                <span>N. User</span>
+                                <span id="quote-3-author">N. User</span>
                             </div>
                         </div>
                     </div>
