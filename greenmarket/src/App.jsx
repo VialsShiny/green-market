@@ -4,6 +4,7 @@ import '../public/css/style.css';
 import Footer from './components/layout/Footer';
 import NavBar from './components/layout/Navbar';
 import _404 from './pages/errors/_404';
+import ProductDetails from './pages/ProductDetails';
 import Products from './pages/Products';
 
 const Home = React.lazy(() => import('./pages/Home'));
@@ -24,6 +25,7 @@ export default function App() {
             >
                 <Route index element={<Home />} />
                 <Route path="/products" element={<Products />} />
+                <Route path="/products/:id" element={<ProductDetails />} />
             </Route>
 
             <Route path="*" element={<_404 />} />
