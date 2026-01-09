@@ -58,3 +58,13 @@ nav {
         #db6b4d 100%
     );
 }
+
+.products-list {
+    background: linear-gradient(
+        -135deg,
+        #bfe990 0%,
+        #fbe9ed 35%,
+        #f6d3dc 85%,
+        #bcf2c3 100%
+    );
+}
