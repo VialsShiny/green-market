@@ -1,0 +1,15 @@
+# robots.txt pour Green Market
+# Indique aux moteurs de recherche ce qu'ils peuvent crawler
+
+# Bloquer les dossiers sensibles
+User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Disallow: /private/
+
+# Autoriser tout le reste
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://green-market-tau.vercel.app/sitemap.xml
