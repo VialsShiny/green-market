@@ -5,40 +5,36 @@ export default function Footer() {
                 <strong className="footer-title text-[4.2rem]">
                     Green Market
                 </strong>
-                <p className="pb-3">
-                    Lorem ipsum dolor sit amet consectetur adipiscing elit ut et
-                    massa mi..
-                </p>
+                <p className="pb-3">Produits responsables & locaux</p>
 
                 <div className="footer-columns flex justify-between">
                     <div className="footer-column w-1/2 flex flex-col gap-y-2">
                         <p>Title</p>
                         <ul className="flex flex-col gap-y-1">
                             <li>
-                                <a href="#">Link</a>
+                                <a href="/" className="underline">
+                                    Accueil
+                                </a>
                             </li>
                             <li>
-                                <a href="#">Link</a>
+                                <a href="/products" className="underline">
+                                    Produits
+                                </a>
                             </li>
                             <li>
-                                <a href="#">Link</a>
+                                <a href="/mentions" className="underline">
+                                    Mentions légales
+                                </a>
                             </li>
                         </ul>
                     </div>
-                    <div className="footer-column w-1/2 flex flex-col gap-y-2">
-                        <p>Title</p>
-                        <ul>
-                            <li>
-                                <a href="#">Link</a>
-                            </li>
-                            <li>
-                                <a href="#">Link</a>
-                            </li>
-                            <li>
-                                <a href="#">Link</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <address className="not-italic footer-column w-1/2 flex flex-col gap-y-2">
+                        <div>Green Market</div>
+                        <p className="text-xs text-overflow">
+                            contact@greenmarket.example
+                        </p>
+                        <p className="text-xs">+33 1 23 45 67 89</p>
+                    </address>
                 </div>
             </div>
 
