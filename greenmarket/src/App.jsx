@@ -1,6 +1,7 @@
 import React, {Suspense} from 'react';
 import {Outlet, Route, Routes} from 'react-router-dom';
 import '../public/css/style.css';
+import Footer from './components/layout/Footer';
 import NavBar from './components/layout/Navbar';
 import _404 from './pages/errors/_404';
 
@@ -16,6 +17,7 @@ export default function App() {
                         <Suspense fallback={<div>Chargement...</div>}>
                             <Outlet />
                         </Suspense>
+                        <Footer />
                     </>
                 }
             >

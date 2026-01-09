@@ -1,11 +1,13 @@
 import {LuArrowRight} from 'react-icons/lu';
 
 export default function ProductCard({
+    id = '0',
     imageSrc = '...',
     imageAlt = 'Produit',
     title = 'Produit 1',
+    price = 'E',
     description = 'Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et',
-    promotion = true,
+    promotion = false,
     maxDescriptionLength = 50,
     buttonText = 'Voir plus',
 }) {
@@ -25,6 +27,9 @@ export default function ProductCard({
                         </p>
                     )}
                 </div>
+                <div className="price__holder absolute right-2 bottom-2 px-3 py-1 bg-[#212529] rounded-full text-[#F8F9FA]">
+                    <em className="font-normale  ">{price}€</em>
+                </div>
             </div>
             <div className="info flex flex-col justify-evenly h-auto text-[#212529] w-1/2">
                 <div className="text__wrap">
@@ -35,10 +40,13 @@ export default function ProductCard({
                         {truncatedDescription}
                     </p>
                 </div>
-                <button className="bg-[#B3E479] flex items-center rounded-[16px] p-2 text-[20px] gap-x-2">
+                <a
+                    href={`/products/${id}`}
+                    className="bg-[#B3E479] w-fit flex items-center rounded-[16px] p-2 text-[20px] gap-x-2 drop-shadow-md"
+                >
                     {buttonText}
                     <LuArrowRight className="size-6" />
-                </button>
+                </a>
             </div>
         </div>
     );

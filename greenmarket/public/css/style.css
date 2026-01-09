@@ -18,7 +18,8 @@
     font-style: normal;
 }
 
-h1 {
+h1,
+.footer-title {
     font-family: 'Alumni Sans', sans-serif;
     font-optical-sizing: auto;
     font-weight: 800;
@@ -46,4 +47,14 @@ nav {
 
 .our-products .promotion-rectangle {
     font-weight: 800;
+}
+
+.valeurs-avis {
+    background: linear-gradient(
+        180deg,
+        #90e99c 0%,
+        #bcf2c3 15%,
+        #edb5a6 35%,
+        #db6b4d 100%
+    );
 }
