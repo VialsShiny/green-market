@@ -1,6 +1,7 @@
 import React, {Suspense} from 'react';
 import {Outlet, Route, Routes} from 'react-router-dom';
-import NavBar from './components/layout/Navbar';    
+import '../public/css/style.css';
+import NavBar from './components/layout/Navbar';
 import _404 from './pages/errors/_404';
 
 const Home = React.lazy(() => import('./pages/Home'));
