@@ -19,7 +19,16 @@ export default function ProductDetailCard({
                 <img
                     src={imageSrc}
                     alt={imageAlt}
-                    className="max-h-[400px] object-contain"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="high"
+                    width="400"
+                    height="400"
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="max-h-[400px] w-full object-contain"
+                    onError={(e) => {
+                        e.currentTarget.src = '/placeholder-product.png';
+                    }}
                 />
 
                 {promotion && (
@@ -37,7 +46,7 @@ export default function ProductDetailCard({
                 <header>
                     <div className="flex items-center gap-3 mb-2">
                         <span className="uppercase bg-[#B3E479] w-fit px-2 py-1 rounded-sm text-sm tracking-widest text-[#212529] font-semibold">
-                            <span>{category}</span>
+                            {category}
                         </span>
                     </div>
 
