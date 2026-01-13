@@ -7,7 +7,7 @@ export default function ProductCard({
     title = 'Produit 1',
     price = 'E',
     description = 'Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et',
-    promotion = true,
+    promotion = false,
     maxTitleLength = 25,
     maxDescriptionLength = 34,
     buttonText = 'Voir plus',
@@ -26,12 +26,14 @@ export default function ProductCard({
     return (
         <div
             className={`product-card flex ${
-                verticale ? 'flex-col gap-3' : 'gap-6'
-            } w-full max-w-[350px] xl:max-w-[650px]`}
+                verticale
+                    ? 'flex-col gap-3 w-full max-w-[160px] xl:max-w-[200px]'
+                    : 'gap-6 w-full max-w-[350px] xl:max-w-[650px]'
+            }`}
         >
             <div
-                className={`image__holder relative size-40 xl:size-50 w-1/2 bg-white ${
-                    verticale ? 'rounded-b-[12px]' : 'rounded-r-[12px]'
+                className={`image__holder relative size-40 xl:size-50 bg-white ${
+                    verticale ? 'rounded-b-[12px]' : 'rounded-r-[12px] w-1/2'
                 } outline-2 outline-[#B3E479]`}
             >
                 <img
@@ -71,7 +73,11 @@ export default function ProductCard({
                 </div>
             </div>
 
-            <div className="info flex flex-col justify-evenly text-[#212529] w-1/2">
+            <div
+                className={`info flex flex-col justify-evenly text-[#212529] ${
+                    verticale ? 'gap-y-2 w-full' : 'w-1/2'
+                }`}
+            >
                 <div className="text__wrap">
                     <strong
                         className="font-normal text-[20px] xl:text-[24px] block overflow-hidden"
