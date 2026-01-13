@@ -31,16 +31,13 @@ export default function Products() {
         <section className="products-list min-h-screen px-6 pt-36 pb-12">
             <h1 className="sr-only">Liste des produits</h1>
 
-            {/* Layout principal */}
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[280px_1fr] gap-10">
-                {/* ===== Colonne gauche : Search & filtres ===== */}
                 <aside className="w-full">
                     <form
                         className="flex flex-col gap-4 sticky top-32"
                         onSubmit={(e) => e.preventDefault()}
                         role="search"
                     >
-                        {/* Search */}
                         <div className="bg-[#212529] flex items-center gap-x-3 rounded-[8px] px-4 py-3 text-[#F8F9FA]">
                             <label htmlFor="search-product" className="sr-only">
                                 Rechercher un produit
@@ -56,7 +53,6 @@ export default function Products() {
                             />
                         </div>
 
-                        {/* Filtres (placeholder) */}
                         <button
                             type="button"
                             className="flex items-center gap-2 bg-[#212529] text-[#F8F9FA] rounded-[8px] px-4 py-3 hover:bg-[#343a40] transition"
@@ -67,9 +63,7 @@ export default function Products() {
                     </form>
                 </aside>
 
-                {/* ===== Colonne droite : Produits ===== */}
                 <main>
-                    {/* Loader */}
                     {loading && (
                         <p
                             className="text-center text-gray-500 py-12"
@@ -79,7 +73,6 @@ export default function Products() {
                         </p>
                     )}
 
-                    {/* Erreur */}
                     {error && (
                         <p
                             className="text-center text-red-500 py-12"
@@ -90,10 +83,9 @@ export default function Products() {
                         </p>
                     )}
 
-                    {/* Grille produits */}
                     {!loading && !error && (
                         <div
-                            className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10"
+                            className="grid grid-cols-1 sm:grid-cols-2 gap-10"
                             role="list"
                             aria-label="Catalogue produits"
                         >
