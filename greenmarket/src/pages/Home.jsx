@@ -22,6 +22,44 @@ export default function Home() {
         'Matières recyclable',
     ];
 
+    const testimonials = [
+        {
+            id: 1,
+            author: 'Nathalie R.',
+            message:
+                'Produits de très bonne qualité, livraison rapide et service client au top. Je recommande sans hésiter !',
+            avatarColor: '#DB4D72',
+        },
+        {
+            id: 2,
+            author: 'Julien M.',
+            message:
+                'Très satisfait de mon achat. Le rendu est encore mieux que sur les photos, je repasserai commande.',
+            avatarColor: '#DB4D72',
+        },
+        {
+            id: 3,
+            author: 'Camille D.',
+            message:
+                'Site clair, commande simple et produit conforme. Petit plus pour l’emballage soigné.',
+            avatarColor: '#DB4D72',
+        },
+        {
+            id: 4,
+            author: 'Lucas P.',
+            message:
+                'Excellente expérience du début à la fin. Rapport qualité/prix vraiment intéressant.',
+            avatarColor: '#DB4D72',
+        },
+        {
+            id: 5,
+            author: 'Sarah L.',
+            message:
+                'Je ne suis jamais déçue, c’est déjà ma troisième commande. Produits fiables et durables.',
+            avatarColor: '#DB4D72',
+        },
+    ];
+
     const scrollToProducts = () => {
         const el = document.getElementById('products');
         if (el) {
@@ -94,7 +132,7 @@ export default function Home() {
 
             <section
                 id="products"
-                className="our-products bg-[#90E99C] p-[24px]"
+                className="our-products bg-[#90E99C] p-[24px] lg:py-24"
                 aria-labelledby="products-heading"
             >
                 <div className="w-full xl:max-w-1/2 xl:translate-x-1/2 p-[12px] pb-6 flex flex-col rounded-[12px] outline-2 outline-[#F8F9FA] bg-[#4DDB60]">
@@ -147,7 +185,7 @@ export default function Home() {
                 </div>
             </section>
 
-            <section className="valeurs-avis px-6 py-12 flex flex-col lg:items-center">
+            <section className="valeurs-avis px-6 py-12 lg:py-24 flex flex-col lg:gap-y-12 lg:items-center">
                 <div className="relative w-full lg:max-w-2xl xl:max-w-4xl flex items-center bg-[#212529] justify-center px-3 py-4 overflow-hidden outline-2 outline-[#FBE9ED] rounded-[8px]">
                     <div
                         className="absolute inset-0 pointer-events-none flex flex-wrap justify-center items-center"
@@ -195,73 +233,42 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div className="mt-12">
+                <div className="mt-12 lg:max-w-1/2 xl:max-2/3">
                     <strong className="title text-[2.5rem] text-[#F8F9FA]">
                         Les avis de nos clients
                     </strong>
                     <div
-                        className="quote__container flex gap-x-6 overflow-scroll"
+                        className="quote__container flex gap-x-6 overflow-x-scroll snap-x snap-proximity"
                         aria-label="Témoignages clients"
                     >
-                        <div
-                            className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]"
-                            role="group"
-                            aria-labelledby="quote-1-author"
-                        >
-                            <div className="absolute top-4 left-4 text-4xl font-bold select-none">
-                                <LuQuote />
+                        {testimonials.map((quote) => (
+                            <div
+                                key={quote.id}
+                                className="bg-white snap-start min-w-[200px] lg:min-w-[266px] xl:min-w-[300px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]"
+                                role="group"
+                                aria-labelledby={`quote-${quote.id}-author`}
+                            >
+                                <div className="absolute top-4 left-4 text-4xl font-bold select-none">
+                                    <LuQuote />
+                                </div>
+
+                                <p className="text-[#E47995] text-base mt-12 mb-3 leading-relaxed">
+                                    {quote.message}
+                                </p>
+
+                                <div className="flex items-center gap-3">
+                                    <div
+                                        className="w-10 h-10 rounded-full"
+                                        style={{
+                                            backgroundColor: quote.avatarColor,
+                                        }}
+                                    />
+                                    <span id={`quote-${quote.id}-author`}>
+                                        {quote.author}
+                                    </span>
+                                </div>
                             </div>
-
-                            <p className="text-[#E47995] text-base mt-12 mb-3 leading-relaxed">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi...
-                            </p>
-
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-[#DB4D72]" />
-                                <span id="quote-1-author">N. User</span>
-                            </div>
-                        </div>
-
-                        <div
-                            className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]"
-                            role="group"
-                            aria-labelledby="quote-2-author"
-                        >
-                            <div className="absolute top-4 left-4 text-4xl font-bold select-none">
-                                <LuQuote />
-                            </div>
-
-                            <p className="text-[#E47995] text-base mt-12 mb-3 leading-relaxed">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi...
-                            </p>
-
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-[#DB4D72]" />
-                                <span id="quote-2-author">N. User</span>
-                            </div>
-                        </div>
-
-                        <div
-                            className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]"
-                            role="group"
-                            aria-labelledby="quote-3-author"
-                        >
-                            <div className="absolute top-4 left-4 text-4xl font-bold select-none">
-                                <LuQuote />
-                            </div>
-
-                            <p className="text-[#E47995] text-base mt-12 mb-3 leading-relaxed">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi...
-                            </p>
-
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-[#DB4D72]" />
-                                <span id="quote-3-author">N. User</span>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
