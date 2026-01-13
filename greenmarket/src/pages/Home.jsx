@@ -212,6 +212,7 @@ export default function Home() {
                     <div className="relative z-10 w-full flex flex-wrap justify-evenly gap-6 max-w-4xl px-4">
                         {values.map((item, idx) => (
                             <div
+                                key={idx}
                                 className={`w-full flex ${
                                     idx % 2 === 0
                                         ? 'justify-start'
@@ -219,7 +220,7 @@ export default function Home() {
                                 }`}
                             >
                                 <div
-                                    key={item}
+                                    key={idx}
                                     className={`bg-[#FBE9ED] text-[#DB4D72] flex text-[1.4rem] md:text-[1.8rem] lg:text-[2.6rem] px-2 py-3 rounded-xl shadow-md ${
                                         idx % 2 === 0
                                             ? 'justify-start pr-6'
