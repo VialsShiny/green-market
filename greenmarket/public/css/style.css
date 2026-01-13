@@ -94,3 +94,31 @@ nav {
 .bold {
     font-weight: bold;
 }
+
+#testimonials {
+    scrollbar-color: #212529 transparent;
+}
+
+/* Scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #e47995 transparent;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e47995;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ff6790;
+}

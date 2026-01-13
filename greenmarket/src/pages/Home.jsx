@@ -197,12 +197,12 @@ export default function Home() {
                         }}
                         aria-hidden="true"
                     >
-                        {Array(50)
+                        {Array(30)
                             .fill('VALEURS')
                             .map((text, idx) => (
                                 <span
                                     key={idx}
-                                    className="text-[15vw] xl:text-[8rem] font-extrabold text-[#FBE9ED] opacity-70 select-none blur-xs m-2"
+                                    className="text-[15vw] lg:text-[8rem] font-extrabold text-[#FBE9ED] opacity-70 select-none blur-xs m-2"
                                 >
                                     {text}
                                 </span>
@@ -239,6 +239,7 @@ export default function Home() {
                     </strong>
                     <div
                         className="quote__container flex gap-x-6 overflow-x-scroll snap-x snap-proximity"
+                        id="testimonials"
                         aria-label="Témoignages clients"
                     >
                         {testimonials.map((quote) => (
