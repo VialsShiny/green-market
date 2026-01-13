@@ -64,7 +64,6 @@ export default function ProductDetails() {
             <article
                 id="product-main"
                 ref={mainRef}
-                tabIndex={-1}
                 className="product-detail px-6 pt-32 pb-12"
                 aria-labelledby="product-title"
                 aria-live="polite"
@@ -192,7 +191,14 @@ export default function ProductDetails() {
                 <p className="mt-3 text-gray-600 max-w-md mx-auto px-12 pb-16 pt-6 text-center">
                     Nous n’avons pas trouvé d’articles correspondant à ce
                     produit pour le moment. N’hésitez pas à explorer notre
-                    catalogue complet.
+                    <span
+                        className="bold cursor-pointer"
+                        onClick={() => navigate(-1)}
+                    >
+                        {' '}
+                        catalogue complet
+                    </span>
+                    .
                 </p>
             )}
         </>
