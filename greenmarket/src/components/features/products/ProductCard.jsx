@@ -27,10 +27,10 @@ export default function ProductCard({
         <div
             className={`product-card flex ${
                 verticale ? 'flex-col gap-3' : 'gap-6'
-            } w-full max-w-[350px]`}
+            } w-full max-w-[350px] xl:max-w-[650px]`}
         >
             <div
-                className={`image__holder relative size-40 w-1/2 bg-white ${
+                className={`image__holder relative size-40 xl:size-50 w-1/2 bg-white ${
                     verticale ? 'rounded-b-[12px]' : 'rounded-r-[12px]'
                 } outline-2 outline-[#B3E479]`}
             >
@@ -59,7 +59,7 @@ export default function ProductCard({
                                 verticale
                                     ? 'text-center w-full'
                                     : '-rotate-90 w-6 left-0 top-4/5'
-                            } text-[12px] tracking-[8px] absolute`}
+                            } text-[12px] tracking-[8px] xl:tracking-[11px] absolute`}
                         >
                             PROMOTION
                         </p>
@@ -74,20 +74,20 @@ export default function ProductCard({
             <div className="info flex flex-col justify-evenly text-[#212529] w-1/2">
                 <div className="text__wrap">
                     <strong
-                        className="font-normal text-[20px] block overflow-hidden"
+                        className="font-normal text-[20px] xl:text-[24px] block overflow-hidden"
                         title={title}
                     >
                         {truncatedTitle}
                     </strong>
 
-                    <p className="product-description text-[14px]">
+                    <p className="product-description text-[14px] xl:text-[16px]">
                         {truncatedDescription}
                     </p>
                 </div>
 
                 <a
                     href={`/products/${id}`}
-                    className={`bg-[#B3E479] w-fit flex items-center rounded-[16px] p-2 text-[16px] gap-x-2 drop-shadow-md ${
+                    className={`bg-[#B3E479] w-fit flex mt-auto items-center rounded-[16px] p-2 text-[16px] gap-x-2 drop-shadow-md ${
                         verticale && 'mt-3'
                     }`}
                 >
