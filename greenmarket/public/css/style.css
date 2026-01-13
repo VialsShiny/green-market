@@ -68,3 +68,7 @@ nav {
         #bcf2c3 100%
     );
 }
+
+.bold {
+    font-weight: bold;
+}
