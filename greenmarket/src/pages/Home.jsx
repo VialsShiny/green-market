@@ -22,11 +22,48 @@ export default function Home() {
         'Matières recyclable',
     ];
 
+    const testimonials = [
+        {
+            id: 1,
+            author: 'Nathalie R.',
+            message:
+                'Produits de très bonne qualité, livraison rapide et service client au top. Je recommande sans hésiter !',
+            avatarColor: '#DB4D72',
+        },
+        {
+            id: 2,
+            author: 'Julien M.',
+            message:
+                'Très satisfait de mon achat. Le rendu est encore mieux que sur les photos, je repasserai commande.',
+            avatarColor: '#DB4D72',
+        },
+        {
+            id: 3,
+            author: 'Camille D.',
+            message:
+                'Site clair, commande simple et produit conforme. Petit plus pour l’emballage soigné.',
+            avatarColor: '#DB4D72',
+        },
+        {
+            id: 4,
+            author: 'Lucas P.',
+            message:
+                'Excellente expérience du début à la fin. Rapport qualité/prix vraiment intéressant.',
+            avatarColor: '#DB4D72',
+        },
+        {
+            id: 5,
+            author: 'Sarah L.',
+            message:
+                'Je ne suis jamais déçue, c’est déjà ma troisième commande. Produits fiables et durables.',
+            avatarColor: '#DB4D72',
+        },
+    ];
+
     const scrollToProducts = () => {
         const el = document.getElementById('products');
         if (el) {
             el.scrollIntoView({behavior: 'smooth', block: 'start'});
-            // Move focus so keyboard users are placed into the product list
             el.focus({preventScroll: true});
         }
     };
@@ -37,7 +74,6 @@ export default function Home() {
                 href="#main"
                 className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-white focus:text-black focus:px-3 focus:py-2 rounded"
                 onClick={(e) => {
-                    // allow normal anchor behavior but also focus target
                     const target = document.getElementById('main');
                     if (target) {
                         e.preventDefault();
@@ -60,12 +96,12 @@ export default function Home() {
                     <div className="flex flex-col gap-0">
                         <h1
                             id="home-title"
-                            className="text-[82px] text-[#DB4D72]"
+                            className="text-[6.8rem] lg:text-[8rem] xl:text-[8.8rem] text-[#DB4D72]"
                         >
                             Green Market
                         </h1>
 
-                        <p className="description text-[19px] text-[#E47995] mt-4">
+                        <p className="description text-[1.2rem] lg:text-[1.6rem] xl:text-[1.8rem] text-[#E47995] mt-4 lg:max-w-4xl">
                             Consommez responsable : produits durables, locaux et
                             tracés pour un quotidien plus vert.
                         </p>
@@ -86,7 +122,9 @@ export default function Home() {
                             className="flex items-center gap-3 focus:outline focus:outline-2 focus:outline-[#DB4D72] bg-transparent"
                         >
                             <IoArrowDown className="size-8 bg-[#F8F9FA] rounded-[4px] outline-1 outline-[#DB4D72] hover:translate-y-1 transition-all duration-200 ease-out" />
-                            <span className="text-xl">VOIR LES PRODUITS</span>
+                            <span className="text-[1.4rem] lg:text-[1.8rem] xl:text-[2.4rem]">
+                                VOIR LES PRODUITS
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -94,10 +132,10 @@ export default function Home() {
 
             <section
                 id="products"
-                className="our-products bg-[#90E99C] p-[24px]"
+                className="our-products bg-[#90E99C] p-[24px] lg:py-24"
                 aria-labelledby="products-heading"
             >
-                <div className="w-full p-[12px] pb-6 flex flex-col rounded-[12px] outline-2 outline-[#F8F9FA] bg-[#4DDB60]">
+                <div className="w-full xl:max-w-1/2 xl:translate-x-1/2 p-[12px] pb-6 flex flex-col rounded-[12px] outline-2 outline-[#F8F9FA] bg-[#4DDB60]">
                     <h2
                         id="products-heading"
                         className="title text-[4rem] mb-6"
@@ -108,7 +146,7 @@ export default function Home() {
                     <div
                         role="list"
                         aria-label="Liste des produits phares"
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                        className="grid grid-cols-1 sm:grid-cols-2 gap-6"
                     >
                         {products.map((product) => (
                             <article
@@ -147,8 +185,8 @@ export default function Home() {
                 </div>
             </section>
 
-            <section className="valeurs-avis px-6 py-12">
-                <div className="relative w-full flex items-center bg-[#212529] justify-center px-3 py-4 overflow-hidden outline-2 outline-[#FBE9ED] rounded-[8px]">
+            <section className="valeurs-avis px-6 py-12 lg:py-24 flex flex-col lg:gap-y-12 lg:items-center">
+                <div className="relative w-full lg:max-w-2xl xl:max-w-4xl flex items-center bg-[#212529] justify-center px-3 py-4 overflow-hidden outline-2 outline-[#FBE9ED] rounded-[8px]">
                     <div
                         className="absolute inset-0 pointer-events-none flex flex-wrap justify-center items-center"
                         style={{
@@ -159,101 +197,80 @@ export default function Home() {
                         }}
                         aria-hidden="true"
                     >
-                        {Array(50)
+                        {Array(30)
                             .fill('VALEURS')
                             .map((text, idx) => (
                                 <span
                                     key={idx}
-                                    className="text-[4rem] font-extrabold text-[#FBE9ED] opacity-70 select-none blur-xs m-2"
+                                    className="text-[15vw] lg:text-[8rem] font-extrabold text-[#FBE9ED] opacity-70 select-none blur-xs m-2"
                                 >
                                     {text}
                                 </span>
                             ))}
                     </div>
 
-                    <div className="relative z-10 w-full flex flex-wrap gap-6 max-w-4xl px-4">
+                    <div className="relative z-10 w-full flex flex-wrap justify-evenly gap-6 max-w-4xl px-4">
                         {values.map((item, idx) => (
                             <div
-                                key={item}
-                                className={`bg-[#FBE9ED] text-[#DB4D72] flex text-[1.4rem] md:text-xl px-2 py-3 rounded-xl shadow-md min-w-[220px] text-center ${
+                                key={idx}
+                                className={`w-full flex ${
                                     idx % 2 === 0
-                                        ? 'justify-self-center'
-                                        : 'justify-self-end'
+                                        ? 'justify-start'
+                                        : 'justify-end'
                                 }`}
                             >
-                                {item}
+                                <div
+                                    key={idx}
+                                    className={`bg-[#FBE9ED] text-[#DB4D72] flex text-[1.4rem] md:text-[1.8rem] lg:text-[2.6rem] px-2 py-3 rounded-xl shadow-md ${
+                                        idx % 2 === 0
+                                            ? 'justify-start pr-6'
+                                            : 'justify-end pl-6'
+                                    }`}
+                                >
+                                    {item}
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                <div className="mt-12">
+                <div className="mt-12 lg:max-w-1/2 xl:max-2/3">
                     <strong className="title text-[2.5rem] text-[#F8F9FA]">
                         Les avis de nos clients
                     </strong>
                     <div
-                        className="quote__container flex gap-x-6 overflow-scroll"
+                        className="quote__container flex gap-x-6 overflow-x-scroll snap-x snap-proximity"
+                        id="testimonials"
                         aria-label="Témoignages clients"
                     >
-                        <div
-                            className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]"
-                            role="group"
-                            aria-labelledby="quote-1-author"
-                        >
-                            <div className="absolute top-4 left-4 text-4xl font-bold select-none">
-                                <LuQuote />
+                        {testimonials.map((quote) => (
+                            <div
+                                key={quote.id}
+                                className="bg-white snap-start min-w-[200px] lg:min-w-[266px] xl:min-w-[300px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]"
+                                role="group"
+                                aria-labelledby={`quote-${quote.id}-author`}
+                            >
+                                <div className="absolute top-4 left-4 text-4xl font-bold select-none">
+                                    <LuQuote />
+                                </div>
+
+                                <p className="text-[#E47995] text-base mt-12 mb-3 leading-relaxed">
+                                    {quote.message}
+                                </p>
+
+                                <div className="flex items-center gap-3">
+                                    <div
+                                        className="w-10 h-10 rounded-full"
+                                        style={{
+                                            backgroundColor: quote.avatarColor,
+                                        }}
+                                    />
+                                    <span id={`quote-${quote.id}-author`}>
+                                        {quote.author}
+                                    </span>
+                                </div>
                             </div>
-
-                            <p className="text-[#E47995] text-base mt-12 mb-3 leading-relaxed">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi...
-                            </p>
-
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-[#DB4D72]" />
-                                <span id="quote-1-author">N. User</span>
-                            </div>
-                        </div>
-
-                        <div
-                            className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]"
-                            role="group"
-                            aria-labelledby="quote-2-author"
-                        >
-                            <div className="absolute top-4 left-4 text-4xl font-bold select-none">
-                                <LuQuote />
-                            </div>
-
-                            <p className="text-[#E47995] text-base mt-12 mb-3 leading-relaxed">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi...
-                            </p>
-
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-[#DB4D72]" />
-                                <span id="quote-2-author">N. User</span>
-                            </div>
-                        </div>
-
-                        <div
-                            className="bg-white min-w-[200px] rounded-xl shadow-lg px-4 py-2 max-w-md w-full relative text-[#DB4D72]"
-                            role="group"
-                            aria-labelledby="quote-3-author"
-                        >
-                            <div className="absolute top-4 left-4 text-4xl font-bold select-none">
-                                <LuQuote />
-                            </div>
-
-                            <p className="text-[#E47995] text-base mt-12 mb-3 leading-relaxed">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipiscing elit Ut et massa mi...
-                            </p>
-
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-[#DB4D72]" />
-                                <span id="quote-3-author">N. User</span>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>

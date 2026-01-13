@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
+import ProductCard from '../components/features/products/ProductCard';
 import ProductDetailCard from '../components/features/products/ProductDetailCard';
 import {fetchData} from '../components/services/Fetch';
 
@@ -43,13 +44,16 @@ export default function ProductDetails() {
     }, [id]);
 
     useEffect(() => {
+        if (!product?.category || !product?.id) return;
         fetchData('https://fakestoreapi.com/products')
             .then((data) => {
-                setSimilarProducts(
-                    data.filter((product) =>
-                        product.category.includes(product.category())
-                    )
+                const similar = data.filter(
+                    (simProduct) =>
+                        simProduct.category === product.category &&
+                        simProduct.id !== product.id
                 );
+
+                setSimilarProducts(similar);
                 setOtherLoading(false);
             })
             .catch((err) => {
@@ -57,14 +61,13 @@ export default function ProductDetails() {
                 setSimilarError(true);
                 setOtherLoading(false);
             });
-    }, []);
+    }, [product]);
 
     return (
-        <>
+        <div className="min-h-screen">
             <article
                 id="product-main"
                 ref={mainRef}
-                tabIndex={-1}
                 className="product-detail px-6 pt-32 pb-12"
                 aria-labelledby="product-title"
                 aria-live="polite"
@@ -177,24 +180,37 @@ export default function ProductDetails() {
             <hr className="w-1/2 translate-x-1/2 border-gray-300" />
 
             {similarProducts.length > 0 ? (
-                similarProducts.map((product) => (
-                    <ProductCard
-                        id={product.id}
-                        imageSrc={product.image}
-                        imageAlt={product.title}
-                        price={product.price}
-                        title={product.title}
-                        description={product.description}
-                        verticale={true}
-                    />
-                ))
+                <div className="similar-products flex justify-start lg:justify-center gap-6 xl:gap-12 overflow-x-auto overscroll-x-contain scroll-smooth snap-x snap-mandatory px-4 py-6 md:gap-6 md:px-6 lg:gap-8 lg:px-8 pb-16 lg:pb-20">
+                    {similarProducts.map((product) => (
+                        <div
+                            key={product.id}
+                            className="snap-center lg:snap-start"
+                        >
+                            <ProductCard
+                                id={product.id}
+                                imageSrc={product.image}
+                                imageAlt={product.title}
+                                price={product.price}
+                                title={product.title}
+                                description={product.description}
+                                verticale={true}
+                            />
+                        </div>
+                    ))}
+                </div>
             ) : (
                 <p className="mt-3 text-gray-600 max-w-md mx-auto px-12 pb-16 pt-6 text-center">
                     Nous n’avons pas trouvé d’articles correspondant à ce
                     produit pour le moment. N’hésitez pas à explorer notre
-                    catalogue complet.
+                    <span
+                        className="bold cursor-pointer ml-1 underline"
+                        onClick={() => navigate(-1)}
+                    >
+                        catalogue complet
+                    </span>
+                    .
                 </p>
             )}
-        </>
+        </div>
     );
 }

@@ -39,6 +39,28 @@ nav {
         #90e99c 75%,
         #90e99c 100%
     );
+
+    @media screen and (min-width: 866px) {
+        background: linear-gradient(
+            175deg,
+            #f2bcca 0%,
+            #eda6b9 25%,
+            #d3f6d7 50%,
+            #90e99c 75%,
+            #90e99c 100%
+        );
+    }
+
+    @media screen and (min-width: 1233px) {
+        background: linear-gradient(
+            168deg,
+            #f2bcca 0%,
+            #eda6b9 25%,
+            #d3f6d7 50%,
+            #90e99c 75%,
+            #90e99c 100%
+        );
+    }
 }
 
 .see-more__wrap p {
@@ -67,4 +89,36 @@ nav {
         #f6d3dc 85%,
         #bcf2c3 100%
     );
+}
+
+.bold {
+    font-weight: bold;
+}
+
+#testimonials {
+    scrollbar-color: #212529 transparent;
+}
+
+/* Scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #e47995 transparent;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e47995;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ff6790;
 }
