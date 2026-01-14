@@ -1,14 +1,14 @@
 # 🌱 GreenMarket
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed-Vercel-black?style=for-the-badge&logo=vercel)]([VOTRE_LIEN_VERCEL](https://green-market-tau.vercel.app))
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed-Vercel-black?style=for-the-badge&logo=vercel)](https://green-market-virid.vercel.app)
 [![Figma](https://img.shields.io/badge/Figma-Design-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://urlr.me/rVRZQ4)
-[![Lighthouse](https://img.shields.io/badge/Lighthouse-80+-00C853?style=for-the-badge&logo=lighthouse&logoColor=white)](./docs/lighthouse/)
+[![Lighthouse](https://img.shields.io/badge/Lighthouse-90+-00C853?style=for-the-badge&logo=lighthouse&logoColor=white)](./docs/lighthouse/)
 
 **Boutique en ligne éco-responsable • ECF1 - RNCP 37674**
 
 _Cosmétiques naturels · Vêtements recyclés · Accessoires zéro déchet_
 
-[🌐 Démo](https://green-market-tau.vercel.app) • [🎨 Maquette](https://urlr.me/rVRZQ4) • [📊 Lighthouse](./docs/lighthouse/)
+[🌐 Démo](https://green-market-virid.vercel.app) • [🎨 Maquette](https://urlr.me/rVRZQ4) • [📊 Lighthouse](./docs/lighthouse/)
 
 ---
 
