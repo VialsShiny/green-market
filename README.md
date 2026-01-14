@@ -87,9 +87,9 @@ greenmarket/
 
 ## 📊 Scores Lighthouse
 
-| Performance | Accessibilité | Best Practices |    SEO     |
-| :---------: | :-----------: | :------------: | :--------: |
-| **XX**/100  |  **XX**/100   |   **XX**/100   | **XX**/100 |
+| Accessibilité | Best Practices |    SEO     |
+| :-----------: | :------------: | :--------: |
+|  **98**/100   |   **100**/100   | **93**/100 |
 
 > Rapports complets dans `/docs/lighthouse/`
 
