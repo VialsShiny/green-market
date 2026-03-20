@@ -1,14 +1,16 @@
-import {useEffect, useState} from 'react';
-import {IoArrowDown} from 'react-icons/io5';
-import {LuArrowRight, LuQuote} from 'react-icons/lu';
+import { useEffect, useState } from 'react';
+import { IoArrowDown } from 'react-icons/io5';
+import { LuArrowRight, LuQuote } from 'react-icons/lu';
 import ProductCard from '../components/features/products/ProductCard';
-import {fetchData} from '../components/services/Fetch';
+import { fetchData } from '../components/services/Fetch';
 
 export default function Home() {
     const [products, setProducts] = useState([]);
 
+    const apiUrl = import.meta.env.VITE_API_URL
+
     useEffect(() => {
-        fetchData('https://fakestoreapi.com/products')
+        fetchData(`${apiUrl}/products`)
             .then((data) => {
                 setProducts(data.slice(0, 4));
             })
@@ -63,8 +65,8 @@ export default function Home() {
     const scrollToProducts = () => {
         const el = document.getElementById('products');
         if (el) {
-            el.scrollIntoView({behavior: 'smooth', block: 'start'});
-            el.focus({preventScroll: true});
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            el.focus({ preventScroll: true });
         }
     };
 
@@ -169,7 +171,7 @@ export default function Home() {
                                     price={product.price}
                                     title={product.title}
                                     description={product.description}
-                                    // promotion={product.price > 50} Exemple
+                                // promotion={product.price > 50} Exemple
                                 />
                             </article>
                         ))}
@@ -213,19 +215,17 @@ export default function Home() {
                         {values.map((item, idx) => (
                             <div
                                 key={idx}
-                                className={`w-full flex ${
-                                    idx % 2 === 0
-                                        ? 'justify-start'
-                                        : 'justify-end'
-                                }`}
+                                className={`w-full flex ${idx % 2 === 0
+                                    ? 'justify-start'
+                                    : 'justify-end'
+                                    }`}
                             >
                                 <div
                                     key={idx}
-                                    className={`bg-[#FBE9ED] text-[#DB4D72] flex text-[1.4rem] md:text-[1.8rem] lg:text-[2.6rem] px-2 py-3 rounded-xl shadow-md ${
-                                        idx % 2 === 0
-                                            ? 'justify-start pr-6'
-                                            : 'justify-end pl-6'
-                                    }`}
+                                    className={`bg-[#FBE9ED] text-[#DB4D72] flex text-[1.4rem] md:text-[1.8rem] lg:text-[2.6rem] px-2 py-3 rounded-xl shadow-md ${idx % 2 === 0
+                                        ? 'justify-start pr-6'
+                                        : 'justify-end pl-6'
+                                        }`}
                                 >
                                     {item}
                                 </div>
