@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
-import {LuSearch, LuSettings2} from 'react-icons/lu';
+import { useEffect, useState } from 'react';
+import { LuSearch, LuSettings2 } from 'react-icons/lu';
 import ProductCard from '../components/features/products/ProductCard';
-import {fetchData} from '../components/services/Fetch';
+import { fetchData } from '../components/services/Fetch';
 
 export default function Products() {
     const [products, setProducts] = useState([]);
@@ -9,8 +9,10 @@ export default function Products() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
+    const apiUrl = import.meta.env.VITE_API_URL
+
     useEffect(() => {
-        fetchData('https://fakestoreapi.com/products')
+        fetchData(`${apiUrl}/products`)
             .then((data) => {
                 setProducts(data);
                 setLoading(false);
