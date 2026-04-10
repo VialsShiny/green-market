@@ -1,0 +1,5 @@
+*.env.local
+*.env.dev
+*.env.test
+# Ignore the .env file if it exists, but keep the .env.example file
+.env

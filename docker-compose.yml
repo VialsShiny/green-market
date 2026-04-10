@@ -17,14 +17,22 @@ services:
       - db
     ports:
       - "8000:80"
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
   db:
     image: mysql:8.0
     container_name: symfony_db
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: symfony
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: 3306
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
