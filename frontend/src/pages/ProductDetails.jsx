@@ -1,11 +1,11 @@
-import {useEffect, useRef, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import ProductCard from '../components/features/products/ProductCard';
 import ProductDetailCard from '../components/features/products/ProductDetailCard';
-import {fetchData} from '../components/services/Fetch';
+import { fetchData } from '../components/services/Fetch';
 
 export default function ProductDetails() {
-    const {id} = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
     const [similarProducts, setSimilarProducts] = useState([]);
@@ -15,12 +15,14 @@ export default function ProductDetails() {
     const [error, setError] = useState(null);
     const mainRef = useRef(null);
 
+    const apiUrl = import.meta.env.VITE_API_URL;
+
     useEffect(() => {
         let mounted = true;
         setLoading(true);
         setError(null);
 
-        fetchData(`https://fakestoreapi.com/products/${id}`)
+        fetchData(`${apiUrl}/products/${id}`)
             .then((data) => {
                 if (!mounted) return;
                 setProduct(data);
@@ -45,7 +47,7 @@ export default function ProductDetails() {
 
     useEffect(() => {
         if (!product?.category || !product?.id) return;
-        fetchData('https://fakestoreapi.com/products')
+        fetchData(`${apiUrl}/products`)
             .then((data) => {
                 const similar = data.filter(
                     (simProduct) =>
@@ -132,7 +134,7 @@ export default function ProductDetails() {
                                     setError(null);
                                     // relancer fetch
                                     fetchData(
-                                        `https://fakestoreapi.com/products/${id}`
+                                        `${apiUrl}/products/${id}`
                                     )
                                         .then((data) => {
                                             setProduct(data);
@@ -171,7 +173,7 @@ export default function ProductDetails() {
                             price={product.price}
                             category={product.category}
                             description={product.description}
-                            // promotion={product.price > 50} Example
+                        // promotion={product.price > 50} Example
                         />
                     </article>
                 )}
