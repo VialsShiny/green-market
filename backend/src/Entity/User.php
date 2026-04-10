@@ -42,9 +42,79 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     // Interface UserInterface
     public function getRoles(): array { return ['ROLE_'.strtoupper($this->role)]; }
-    public function getUserIdentifier(): string { return $this->email; }
     public function eraseCredentials(): void {}
 
     // Interface PasswordAuthenticatedUserInterface
     public function getPassword(): ?string { return $this->password; }
+
+        public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getRef(): string
+    {
+        return $this->ref;
+    }
+
+    public function setRef(string $ref): static
+    {
+        $this->ref = $ref;
+
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getUserIdentifier(): string {
+         return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): static
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function getCreationDate(): \DateTimeInterface
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creationDate): static
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
 }
