@@ -9,6 +9,7 @@ lerna-debug.log*
 
 .env
 !.env.example
+package-lock.json
 node_modules
 dist
 dist-ssr
