@@ -12,7 +12,6 @@ services:
     container_name: symfony_app
     volumes:
       - ./backend/:/var/www/html:delegated
-      - /var/www/html/vendor
     depends_on:
       - db
     ports:
