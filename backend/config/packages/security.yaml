@@ -14,10 +14,9 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        api:
-            pattern: ^/api
+        login:
+            pattern: ^/api/auth/login
             stateless: true
-            jwt: ~
             json_login:
                 check_path: /api/auth/login
                 username_path: email
@@ -25,9 +24,14 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
+        api:
+            pattern: ^/api
+            stateless: true
+            jwt: ~
+
     access_control:
         # Routes publiques
-        - {path: ^/api/auth, roles: PUBLIC_ACCESS}
+        - {path: ^/api/auth/login$, roles: PUBLIC_ACCESS}
         - {path: ^/api/products$, roles: PUBLIC_ACCESS, methods: [GET]}
         - {path: ^/api/products/\d+$, roles: PUBLIC_ACCESS, methods: [GET]}
         # Routes protégées
