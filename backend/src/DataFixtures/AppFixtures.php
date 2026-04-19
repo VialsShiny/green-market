@@ -55,10 +55,10 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $admin = $this->makeUser('Admin Principal', 'admin@shop.com', 'admin', 'Admin1234!');
-        $producer = $this->makeUser('Jean Producteur', 'producer@shop.com', 'producer', 'Producer1234!');
-        $alice = $this->makeUser('Alice Client', 'alice@shop.com', 'client', 'Alice1234!');
-        $bob = $this->makeUser('Bob Client', 'bob@shop.com', 'client', 'Bob1234!');
+        $admin = $this->makeUser('Admin', 'admin@example.com', 'admin', 'Admin1234!');
+        $producer = $this->makeUser('Jean', 'producer@example.com', 'producer', 'Producer1234!');
+        $alice = $this->makeUser('Alice', 'alice@example.com', 'client', 'Password123!');
+        $bob = $this->makeUser('Bob', 'bob@example.com', 'client', 'Bob1234!');
 
         foreach ([$admin, $producer, $alice, $bob] as $user) {
             $manager->persist($user);

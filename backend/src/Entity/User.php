@@ -44,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private static function generateRef(): string
     {
-        return 'ref_' . bin2hex(random_bytes(16)); // 4 + 32 = 36 chars
+        return 'usr_' . bin2hex(random_bytes(16)); // 4 + 32 = 36 chars
     }
 
     public function __construct()
