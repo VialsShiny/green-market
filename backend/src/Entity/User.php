@@ -55,11 +55,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->products = new ArrayCollection();
     }
 
-    // Interface UserInterface
-    public function getRoles(): array
-    {
-        return ['ROLE_' . strtoupper($this->role)];
-    }
     public function eraseCredentials(): void
     {
     }
@@ -98,16 +93,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUserIdentifier(): string
-    {
-        return $this->email;
-    }
-
     public function setEmail(string $email): static
     {
         $this->email = $email;
 
         return $this;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 
     public function getRole(): string
@@ -139,5 +134,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    // Interface UserInterface
+    public function getRoles(): array
+    {
+        return match ($this->role) {
+            'admin' => ['ROLE_ADMIN', 'ROLE_USER'],
+            'producer' => ['ROLE_PRODUCER', 'ROLE_USER'],
+            default => ['ROLE_USER'],
+        };
     }
 }
