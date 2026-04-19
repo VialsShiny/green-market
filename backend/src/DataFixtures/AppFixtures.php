@@ -77,7 +77,7 @@ class AppFixtures extends Fixture
             ->setStatus('confirmed')
             ->setTotalPrice('17.00')
             ->setUser($alice)
-            ->setCreationDate(new \DateTime())
+            ->setCreationDate(new \DateTimeImmutable())
             ->addItem($this->makeOrderItem($tomates, 4, '2.50'))
             ->addItem($this->makeOrderItem($fromage, 1, '6.90'));
 
