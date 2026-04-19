@@ -112,7 +112,6 @@ README.md
 
 ```bash
 git clone https://github.com/VialsShiny/green-market.git
-cd green-market
 ```
 
 ---
