@@ -11,101 +11,76 @@ class AppFixtures extends Fixture
 {
     public function __construct(
         private readonly UserPasswordHasherInterface $hasher
-    ) {}
+    ) {
+    }
+
+    private static function ref(string $prefix): string
+    {
+        return $prefix . '_' . bin2hex(random_bytes(16)); // ex: usr_a3f1...  (36 chars)
+    }
+
+    private function makeUser(string $name, string $email, string $role, string $password): User
+    {
+        $user = (new User())
+            ->setRef(self::ref('usr'))
+            ->setName($name)
+            ->setEmail($email)
+            ->setRole($role)
+            ->setCreationDate(new \DateTime());
+
+        $user->setPassword($this->hasher->hashPassword($user, $password));
+
+        return $user;
+    }
+
+    private function makeProduct(string $name, string $description, string $price, int $stock, User $producer): Product
+    {
+        return (new Product())
+            ->setRef(self::ref('prd'))
+            ->setName($name)
+            ->setDescription($description)
+            ->setPrice($price)
+            ->setStock($stock)
+            ->setProducer($producer)
+            ->setCreationDate(new \DateTime());
+    }
+
+    private function makeOrderItem(Product $product, int $quantity, string $unitPrice): OrderItem
+    {
+        return (new OrderItem())
+            ->setProduct($product)
+            ->setQuantity($quantity)
+            ->setUnitPrice($unitPrice);
+    }
 
     public function load(ObjectManager $manager): void
     {
-        // Users
-        $admin = new User();
-        $admin->setRef('USR-001')
-            ->setName('Admin Principal')
-            ->setEmail('admin@shop.com')
-            ->setRole('admin')
-            ->setCreationDate(new \DateTime())
-            ->setPassword($this->hasher->hashPassword($admin, 'Admin1234!'));
+        $admin = $this->makeUser('Admin Principal', 'admin@shop.com', 'admin', 'Admin1234!');
+        $producer = $this->makeUser('Jean Producteur', 'producer@shop.com', 'producer', 'Producer1234!');
+        $alice = $this->makeUser('Alice Client', 'alice@shop.com', 'client', 'Alice1234!');
+        $bob = $this->makeUser('Bob Client', 'bob@shop.com', 'client', 'Bob1234!');
 
-        $producer = new User();
-        $producer->setRef('USR-002')
-            ->setName('Jean Producteur')
-            ->setEmail('producer@shop.com')
-            ->setRole('producer')
-            ->setCreationDate(new \DateTime())
-            ->setPassword($this->hasher->hashPassword($producer, 'Producer1234!'));
-
-        $alice = new User();
-        $alice->setRef('USR-003')
-            ->setName('Alice Client')
-            ->setEmail('alice@shop.com')
-            ->setRole('client')
-            ->setCreationDate(new \DateTime())
-            ->setPassword($this->hasher->hashPassword($alice, 'Alice1234!'));
-
-        $bob = new User();
-        $bob->setRef('USR-004')
-            ->setName('Bob Client')
-            ->setEmail('bob@shop.com')
-            ->setRole('client')
-            ->setCreationDate(new \DateTime())
-            ->setPassword($this->hasher->hashPassword($bob, 'Bob1234!'));
-
-        foreach ([$admin, $producer, $alice, $bob] as $u) {
-            $manager->persist($u);
+        foreach ([$admin, $producer, $alice, $bob] as $user) {
+            $manager->persist($user);
         }
 
-        // Products
-        $p1 = new Product();
-        $p1->setRef('PRD-001')
-            ->setName('Tomates Bio')
-            ->setDescription('Tomates bio du jardin')
-            ->setPrice('2.50')
-            ->setStock(100)
-            ->setProducer($producer)
-            ->setCreationDate(new \DateTime());
+        $tomates = $this->makeProduct('Tomates Bio', 'Tomates bio du jardin', '2.50', 100, $producer);
+        $miel = $this->makeProduct('Miel Artisanal', 'Miel de fleurs local', '12.00', 50, $producer);
+        $fromage = $this->makeProduct('Fromage de Chèvre', 'Fromage fermier affiné', '6.90', 30, $producer);
 
-        $p2 = new Product();
-        $p2->setRef('PRD-002')
-            ->setName('Miel Artisanal')
-            ->setDescription('Miel de fleurs local')
-            ->setPrice('12.00')
-            ->setStock(50)
-            ->setProducer($producer)
-            ->setCreationDate(new \DateTime());
-
-        $p3 = new Product();
-        $p3->setRef('PRD-003')
-            ->setName('Fromage de Chèvre')
-            ->setDescription('Fromage fermier affiné')
-            ->setPrice('6.90')
-            ->setStock(30)
-            ->setProducer($producer)
-            ->setCreationDate(new \DateTime());
-
-        foreach ([$p1, $p2, $p3] as $p) {
-            $manager->persist($p);
+        foreach ([$tomates, $miel, $fromage] as $product) {
+            $manager->persist($product);
         }
 
-        // Order items
-        $item1 = new OrderItem();
-        $item1->setProduct($p1)
-            ->setQuantity(4)
-            ->setUnitPrice('2.50');
-
-        $item2 = new OrderItem();
-        $item2->setProduct($p3)
-            ->setQuantity(1)
-            ->setUnitPrice('6.90');
-
-        // Order
-        $order = new Order();
-        $order->setRef('ORD-001')
+        $order = (new Order())
+            ->setRef(self::ref('ord'))
             ->setStatus('confirmed')
             ->setTotalPrice('17.00')
             ->setUser($alice)
             ->setCreationDate(new \DateTime())
-            ->addItem($item1)
-            ->addItem($item2);
+            ->addItem($this->makeOrderItem($tomates, 4, '2.50'))
+            ->addItem($this->makeOrderItem($fromage, 1, '6.90'));
 
-        // Persist order and cascade items
         $manager->persist($order);
 
         $manager->flush();

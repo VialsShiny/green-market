@@ -6,6 +6,8 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
@@ -40,14 +42,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'producer', targetEntity: Product::class)]
     private Collection $products;
 
+    private static function generateRef(): string
+    {
+        return 'ref_' . bin2hex(random_bytes(16)); // 4 + 32 = 36 chars
+    }
+
+    public function __construct()
+    {
+        $this->ref = self::generateRef();
+        $this->creationDate = new \DateTime();
+        $this->orders = new ArrayCollection();
+        $this->products = new ArrayCollection();
+    }
+
     // Interface UserInterface
-    public function getRoles(): array { return ['ROLE_'.strtoupper($this->role)]; }
-    public function eraseCredentials(): void {}
+    public function getRoles(): array
+    {
+        return ['ROLE_' . strtoupper($this->role)];
+    }
+    public function eraseCredentials(): void
+    {
+    }
 
-    // Interface PasswordAuthenticatedUserInterface
-    public function getPassword(): ?string { return $this->password; }
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
 
-        public function getId(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -76,8 +98,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUserIdentifier(): string {
-         return $this->email;
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 
     public function setEmail(string $email): static
