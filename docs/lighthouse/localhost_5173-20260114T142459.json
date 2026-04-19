@@ -4131,7 +4131,7 @@
     {
       "name": "fakestoreapi.com",
       "origins": [
-        "https://fakestoreapi.com"
+        "${apiUrl}"
       ],
       "isUnrecognized": true
     },

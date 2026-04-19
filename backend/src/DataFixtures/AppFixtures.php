@@ -1,0 +1,88 @@
+<?php
+
+namespace App\DataFixtures;
+
+use App\Entity\{User, Product, Order, OrderItem};
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
+class AppFixtures extends Fixture
+{
+    public function __construct(
+        private readonly UserPasswordHasherInterface $hasher
+    ) {
+    }
+
+    private static function ref(string $prefix): string
+    {
+        return $prefix . '_' . bin2hex(random_bytes(16)); // ex: usr_a3f1...  (36 chars)
+    }
+
+    private function makeUser(string $name, string $email, string $role, string $password): User
+    {
+        $user = (new User())
+            ->setRef(self::ref('usr'))
+            ->setName($name)
+            ->setEmail($email)
+            ->setRole($role)
+            ->setCreationDate(new \DateTime());
+
+        $user->setPassword($this->hasher->hashPassword($user, $password));
+
+        return $user;
+    }
+
+    private function makeProduct(string $title, string $description, string $price, int $stock, User $producer, ?string $category = null, ?string $image = null): Product
+    {
+        return (new Product())
+            ->setTitle($title)
+            ->setDescription($description)
+            ->setPrice($price)
+            ->setStock($stock)
+            ->setCategory($category)
+            ->setImage($image)
+            ->setProducer($producer);
+    }
+
+    private function makeOrderItem(Product $product, int $quantity, string $unitPrice): OrderItem
+    {
+        return (new OrderItem())
+            ->setProduct($product)
+            ->setQuantity($quantity)
+            ->setUnitPrice($unitPrice);
+    }
+
+    public function load(ObjectManager $manager): void
+    {
+        $admin = $this->makeUser('Admin', 'admin@example.com', 'admin', 'Admin1234!');
+        $producer = $this->makeUser('Jean', 'producer@example.com', 'producer', 'Producer1234!');
+        $alice = $this->makeUser('Alice', 'alice@example.com', 'client', 'Password123!');
+        $bob = $this->makeUser('Bob', 'bob@example.com', 'client', 'Bob1234!');
+
+        foreach ([$admin, $producer, $alice, $bob] as $user) {
+            $manager->persist($user);
+        }
+
+        $tomates = $this->makeProduct('Tomates Bio', 'Tomates bio du jardin', '2.50', 100, $producer, 'Alimentation', null);
+        $miel = $this->makeProduct('Miel Artisanal', 'Miel de fleurs local', '12.00', 50, $producer, 'Alimentation', null);
+        $fromage = $this->makeProduct('Fromage de Chèvre', 'Fromage fermier affiné', '6.90', 30, $producer, 'Alimentation', null);
+
+        foreach ([$tomates, $miel, $fromage] as $product) {
+            $manager->persist($product);
+        }
+
+        $order = (new Order())
+            ->setRef(self::ref('ord'))
+            ->setStatus('confirmed')
+            ->setTotalPrice('17.00')
+            ->setUser($alice)
+            ->setCreationDate(new \DateTimeImmutable())
+            ->addItem($this->makeOrderItem($tomates, 4, '2.50'))
+            ->addItem($this->makeOrderItem($fromage, 1, '6.90'));
+
+        $manager->persist($order);
+
+        $manager->flush();
+    }
+}

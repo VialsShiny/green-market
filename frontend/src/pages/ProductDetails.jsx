@@ -15,7 +15,7 @@ export default function ProductDetails() {
     const [error, setError] = useState(null);
     const mainRef = useRef(null);
 
-    const apiUrl = import.meta.env.VITE_API_URL
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         let mounted = true;

@@ -9,7 +9,7 @@ export default function Products() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
-    const apiUrl = import.meta.env.VITE_API_URL
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         fetchData(`${apiUrl}/products`)
