@@ -8,6 +8,8 @@ export default function Home() {
     const [products, setProducts] = useState([]);
     const apiUrl = import.meta.env.VITE_API_URL;
 
+    const apiUrl = import.meta.env.VITE_API_URL
+
     useEffect(() => {
         fetchData(`${apiUrl}/products`)
             .then((data) => {
