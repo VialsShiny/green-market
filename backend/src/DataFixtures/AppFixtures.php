@@ -33,16 +33,16 @@ class AppFixtures extends Fixture
         return $user;
     }
 
-    private function makeProduct(string $name, string $description, string $price, int $stock, User $producer): Product
+    private function makeProduct(string $title, string $description, string $price, int $stock, User $producer, ?string $category = null, ?string $image = null): Product
     {
         return (new Product())
-            ->setRef(self::ref('prd'))
-            ->setName($name)
+            ->setTitle($title)
             ->setDescription($description)
             ->setPrice($price)
             ->setStock($stock)
-            ->setProducer($producer)
-            ->setCreationDate(new \DateTime());
+            ->setCategory($category)
+            ->setImage($image)
+            ->setProducer($producer);
     }
 
     private function makeOrderItem(Product $product, int $quantity, string $unitPrice): OrderItem
@@ -64,9 +64,9 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
-        $tomates = $this->makeProduct('Tomates Bio', 'Tomates bio du jardin', '2.50', 100, $producer);
-        $miel = $this->makeProduct('Miel Artisanal', 'Miel de fleurs local', '12.00', 50, $producer);
-        $fromage = $this->makeProduct('Fromage de Chèvre', 'Fromage fermier affiné', '6.90', 30, $producer);
+        $tomates = $this->makeProduct('Tomates Bio', 'Tomates bio du jardin', '2.50', 100, $producer, 'Alimentation', null);
+        $miel = $this->makeProduct('Miel Artisanal', 'Miel de fleurs local', '12.00', 50, $producer, 'Alimentation', null);
+        $fromage = $this->makeProduct('Fromage de Chèvre', 'Fromage fermier affiné', '6.90', 30, $producer, 'Alimentation', null);
 
         foreach ([$tomates, $miel, $fromage] as $product) {
             $manager->persist($product);

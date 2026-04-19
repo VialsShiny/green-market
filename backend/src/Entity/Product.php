@@ -19,6 +19,9 @@ class Product
     #[ORM\Column(length: 36, unique: true)]
     private string $ref;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $title = null;
+
     #[ORM\Column(length: 128)]
     private string $name;
 
@@ -31,8 +34,20 @@ class Product
     #[ORM\Column(type: 'integer')]
     private int $stock = 0;
 
-    #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $creationDate;
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $category = null;
+
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\Column(type: 'decimal', precision: 3, scale: 1, options: ['default' => 0])]
+    private float $ratingRate = 0;
+
+    #[ORM\Column(options: ['default' => 0])]
+    private int $ratingCount = 0;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
@@ -41,9 +56,16 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderItem::class)]
     private Collection $orderItems;
 
+    private static function generateRef(): string
+    {
+        return 'prd_' . bin2hex(random_bytes(16)); // 4 + 32 = 36 chars
+    }
+
     public function __construct()
     {
+        $this->ref = self::generateRef();
         $this->orderItems = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -63,14 +85,14 @@ class Product
         return $this;
     }
 
-    public function getName(): string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): static
+    public function setTitle(?string $title): static
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
@@ -111,14 +133,62 @@ class Product
         return $this;
     }
 
-    public function getCreationDate(): \DateTimeInterface
+    public function getCategory(): ?string
     {
-        return $this->creationDate;
+        return $this->category;
     }
 
-    public function setCreationDate(\DateTimeInterface $creationDate): static
+    public function setCategory(?string $category): static
     {
-        $this->creationDate = $creationDate;
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getRatingRate(): float
+    {
+        return $this->ratingRate;
+    }
+
+    public function setRatingRate(float $ratingRate): static
+    {
+        $this->ratingRate = $ratingRate;
+
+        return $this;
+    }
+
+    public function getRatingCount(): int
+    {
+        return $this->ratingCount;
+    }
+
+    public function setRatingCount(int $ratingCount): static
+    {
+        $this->ratingCount = $ratingCount;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
