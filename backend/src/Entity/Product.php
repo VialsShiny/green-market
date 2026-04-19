@@ -22,9 +22,6 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 128)]
-    private string $name;
-
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
