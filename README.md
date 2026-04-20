@@ -258,8 +258,7 @@ docker compose down -v
 
 ```json
 {
-    "firstname": "Alice",
-    "lastname": "Martin",
+    "name": "Alice",
     "email": "alice@example.com",
     "password": "Password123!",
     "role": "client"
@@ -271,8 +270,7 @@ Réponse `201` :
 ```json
 {
     "id": 1,
-    "firstname": "Alice",
-    "lastname": "Martin",
+    "name": "Alice",
     "email": "alice@example.com",
     "role": "client"
 }
@@ -310,8 +308,7 @@ Réponse `/users` :
 [
     {
         "id": 1,
-        "firstname": "Alice",
-        "lastname": "Martin",
+        "name": "Alice",
         "email": "alice@example.com",
         "role": "client"
     }
