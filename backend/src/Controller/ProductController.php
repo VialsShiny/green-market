@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -66,7 +67,7 @@ class ProductController extends AbstractController
             return $this->json(['error' => 'Le champ price doit être supérieur à 0'], 400);
         }
 
-        $currentUser = $this->getUser();
+        $currentUser = $em->getRepository(User::class)->findOneBy(['id' => $this->getUser()]);
         $product = new Product();
         $product->setTitle($data['title'])
             ->setPrice((float) $data['price'])

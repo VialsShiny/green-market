@@ -26,7 +26,7 @@ class Product
     private ?string $description = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private string $price;
+    private float $price;
 
     #[ORM\Column(type: 'integer')]
     private int $stock = 0;
@@ -106,12 +106,12 @@ class Product
         return $this;
     }
 
-    public function getPrice(): string
+    public function getPrice(): float
     {
         return $this->price;
     }
 
-    public function setPrice(string $price): static
+    public function setPrice(float $price): static
     {
         $this->price = $price;
 
