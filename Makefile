@@ -35,7 +35,7 @@ logs:
 	@docker compose logs $(word 2,$(MAKECMDGOALS))
 
 exec:
-	@docker compose exec -T $(word 2,$(MAKECMDGOALS)) $(word 3,$(MAKECMDGOALS))
+	@docker compose exec -it $(word 2,$(MAKECMDGOALS)) $(word 3,$(MAKECMDGOALS))
 
 format:
 	@cd frontend && npm run format
