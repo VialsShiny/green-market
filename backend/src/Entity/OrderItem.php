@@ -18,7 +18,7 @@ class OrderItem
     private int $quantity;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private string $unitPrice;
+    private float $unitPrice;
 
     #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
@@ -45,12 +45,12 @@ class OrderItem
         return $this;
     }
 
-    public function getUnitPrice(): string
+    public function getUnitPrice(): float
     {
         return $this->unitPrice;
     }
 
-    public function setUnitPrice(string $unitPrice): static
+    public function setUnitPrice(float $unitPrice): static
     {
         $this->unitPrice = $unitPrice;
 
@@ -62,7 +62,7 @@ class OrderItem
         return $this->order;
     }
 
-    public function setOrder(Order $order): static
+    public function setOrder(?Order $order): static
     {
         $this->order = $order;
 

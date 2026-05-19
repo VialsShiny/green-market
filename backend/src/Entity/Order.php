@@ -20,7 +20,7 @@ class Order
     private string $ref;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private string $totalPrice = '0.00';
+    private float $totalPrice = 0.00;
 
     #[ORM\Column(length: 20)]
     private string $status = 'pending';
@@ -78,12 +78,12 @@ class Order
         return $this;
     }
 
-    public function getTotalPrice(): string
+    public function getTotalPrice(): float
     {
         return $this->totalPrice;
     }
 
-    public function setTotalPrice(string $totalPrice): static
+    public function setTotalPrice(float $totalPrice): static
     {
         $this->totalPrice = $totalPrice;
         return $this;

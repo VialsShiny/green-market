@@ -150,4 +150,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             default => ['ROLE_USER'],
         };
     }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
 }

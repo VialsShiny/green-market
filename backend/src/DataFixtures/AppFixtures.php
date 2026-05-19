@@ -38,7 +38,7 @@ class AppFixtures extends Fixture
         return (new Product())
             ->setTitle($title)
             ->setDescription($description)
-            ->setPrice($price)
+            ->setPrice((float) $price)
             ->setStock($stock)
             ->setCategory($category)
             ->setImage($image)
@@ -50,7 +50,7 @@ class AppFixtures extends Fixture
         return (new OrderItem())
             ->setProduct($product)
             ->setQuantity($quantity)
-            ->setUnitPrice($unitPrice);
+            ->setUnitPrice((float) $unitPrice);
     }
 
     public function load(ObjectManager $manager): void
@@ -74,9 +74,9 @@ class AppFixtures extends Fixture
 
         $order = (new Order())
             ->setRef(self::ref('ord'))
-            ->setStatus('confirmed')
-            ->setTotalPrice('17.00')
             ->setUser($alice)
+            ->setStatus('confirmed')
+            ->setTotalPrice(17.00)
             ->setCreationDate(new \DateTimeImmutable())
             ->addItem($this->makeOrderItem($tomates, 4, '2.50'))
             ->addItem($this->makeOrderItem($fromage, 1, '6.90'));

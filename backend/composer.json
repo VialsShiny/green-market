@@ -52,6 +52,7 @@
         "symfony/polyfill-php82": "*"
     },
     "scripts": {
+        "phpstan": "phpstan analyse -c phpstan.neon",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
@@ -74,6 +75,8 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.3",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-symfony": "^2.0",
         "symfony/maker-bundle": "^1.67"
     }
 }

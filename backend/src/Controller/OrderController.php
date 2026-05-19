@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\Product;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,7 +51,7 @@ class OrderController extends AbstractController
             return $this->json(['error' => 'Commande introuvable'], 404);
         }
 
-        $currentUser = $this->getUser();
+        $currentUser = $em->getRepository(User::class)->findOneBy(['id' => $this->getUser()]);
         if (!$this->isGranted('ROLE_ADMIN') && $order->getUser()->getId() !== $currentUser->getId()) {
             return $this->json(['error' => 'Accès interdit'], 403);
         }
@@ -67,7 +68,7 @@ class OrderController extends AbstractController
             return $this->json(['error' => 'La commande doit contenir au moins un produit'], 400);
         }
 
-        $currentUser = $this->getUser();
+        $currentUser = $em->getRepository(User::class)->findOneBy(['id' => $this->getUser()]);
 
         $order = new Order();
         $order->setUser($currentUser);
@@ -94,7 +95,7 @@ class OrderController extends AbstractController
                 ->setUnitPrice($product->getPrice());
 
             $order->addItem($item);
-            $total += $product->getPrice() * $line['quantity'];
+            $total += (float) $product->getPrice() * $line['quantity'];
         }
 
         $order->setTotalPrice(round($total, 2));

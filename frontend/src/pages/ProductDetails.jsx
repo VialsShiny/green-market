@@ -9,8 +9,8 @@ export default function ProductDetails() {
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
     const [similarProducts, setSimilarProducts] = useState([]);
-    const [otherLoading, setOtherLoading] = useState(true);
-    const [similarError, setSimilarError] = useState(null);
+    const [, setOtherLoading] = useState(true);
+    const [, setSimilarError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const mainRef = useRef(null);
@@ -19,26 +19,35 @@ export default function ProductDetails() {
 
     useEffect(() => {
         let mounted = true;
-        setLoading(true);
-        setError(null);
 
-        fetchData(`${apiUrl}/products/${id}`)
-            .then((data) => {
+        async function loadProduct() {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const data = await fetchData(`${apiUrl}/products/${id}`);
+
                 if (!mounted) return;
+
                 setProduct(data);
-                setLoading(false);
 
                 setTimeout(() => mainRef.current?.focus(), 120);
-            })
-            .catch((err) => {
+            } catch (err) {
                 if (!mounted) return;
+
                 console.error('Erreur API:', err);
+
                 setError(
                     'Impossible de charger le produit. Veuillez réessayer.'
                 );
-                setLoading(false);
-                setTimeout(() => mainRef.current?.focus(), 120);
-            });
+            } finally {
+                if (mounted) {
+                    setLoading(false);
+                }
+            }
+        }
+
+        loadProduct();
 
         return () => {
             mounted = false;
