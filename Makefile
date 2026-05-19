@@ -9,7 +9,7 @@ install:
 install-backend:
 	@echo "Installing backend..."
 	@cp ./backend/.env.example ./backend/.env || true
-	@cd ./backend && composer install --no-interaction
+	@cd ./backend && composer install --no-interaction --ignore-platform-req=ext-redis
 	@echo "Backend installed!"
 
 install-frontend:
