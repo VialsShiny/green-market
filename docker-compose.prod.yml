@@ -1,0 +1,88 @@
+services:
+  frontend:
+    # Image frontend buildée et publiée sur Docker Hub
+    image: vials512t/greenmarket:frontend:latest
+
+    # Nom du container
+    container_name: green_market_frontend
+
+    # Redémarre automatiquement sauf arrêt manuel
+    restart: unless-stopped
+
+    ports:
+      # Expose le frontend sur le port 5173
+      - "5173:5173"
+
+    depends_on:
+      - backend
+
+  backend:
+    # Image backend publiée sur Docker Hub
+    image: vials512t/greenmarket:backend:latest
+
+    container_name: green_market_backend
+
+    restart: unless-stopped
+
+    ports:
+      # Apache/PHP exposé sur le port 8000
+      - "8000:80"
+
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+      # Nom du service Docker = hostname réseau interne
+      MYSQL_HOST: db
+
+      MYSQL_PORT: 3306
+
+      # Symfony APP_ENV recommandé
+      APP_ENV: prod
+
+      # Désactive le debug Symfony
+      APP_DEBUG: 0
+
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+
+    container_name: green_market_db
+
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    volumes:
+      # Persistance des données MySQL
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+
+    container_name: green_market_phpmyadmin
+
+    restart: unless-stopped
+
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+
+    ports:
+      # phpMyAdmin accessible sur localhost:8080
+      - "8080:80"
+
+    depends_on:
+      - db
+
+volumes:
+  # Volume Docker persistant pour MySQL
+  db_data:
