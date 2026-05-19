@@ -1,0 +1,45 @@
+# Dépendances
+*/node_modules
+*/vendor
+
+# Git
+.git
+.gitignore
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+
+# Symfony
+var/
+public/build/
+public/bundles/
+
+# Logs
+*.log
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tests / coverage
+coverage/
+.phpunit.result.cache
+
+# Cache
+.cache/
+npm-debug.log
+yarn-error.log
+
+# Docs
+README.md
