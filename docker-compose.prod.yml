@@ -1,7 +1,7 @@
 services:
   frontend:
     # Image frontend buildée et publiée sur Docker Hub
-    image: vials512t/greenmarket-frontend:latest
+    image: vials512t/greenmarket:frontend-latest
 
     # Nom du container
     container_name: green_market_frontend
@@ -18,7 +18,7 @@ services:
 
   backend:
     # Image backend publiée sur Docker Hub
-    image: vials512t/greenmarket-backend:latest
+    image: vials512t/greenmarket:backendl-atest
 
     container_name: green_market_backend
 
