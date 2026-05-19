@@ -9,6 +9,7 @@ install:
 install-backend:
 	@echo "Installing backend..."
 	@cp ./backend/.env.example ./backend/.env || true
+	@cp ./backend/phpstan.dist.neon ./backend/phpstan.neon || true
 	@cd ./backend && composer install --no-interaction --ignore-platform-req=ext-redis
 	@echo "Backend installed!"
 
