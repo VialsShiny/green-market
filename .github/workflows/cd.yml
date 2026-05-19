@@ -92,6 +92,12 @@ jobs:
                   JWT_EXPIRES_IN: ${{ vars.JWT_EXPIRES_IN }}
                   VITE_API_URL: ${{ vars.VITE_API_URL }}
 
+                  MYSQL_USER: ${{ vars.MYSQL_USER }}
+                  MYSQL_PASSWORD: ${{ vars.MYSQL_PASSWORD }}
+
+                  MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+                  MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+
                   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
                   DB_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
                   JWT_SECRET: ${{ secrets.JWT_SECRET }}
