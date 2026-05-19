@@ -2,19 +2,19 @@ SHELL := bash
 
 install:
 	@echo "Installing package..."
-	@copy .\backend\.env.example .\backend\.env
-	@copy .\frontend\.env.example .\frontend\.env
+	@cp .\backend\.env.example .\backend\.env
+	@cp .\frontend\.env.example .\frontend\.env
 	@echo All done !
 
 install-backend:
 	@echo "Installing backend..."
-	@copy .\backend\.env.example .\backend\.env
+	@cp .\backend\.env.example .\backend\.env
 	@cd backend && composer install
 	@echo "Backend installed!"
 
 install-frontend:
 	@echo "Installing frontend..."
-	@copy .\frontend\.env.example .\frontend\.env
+	@cp .\frontend\.env.example .\frontend\.env
 	@cd frontend && npm install
 	@echo "Frontend installed!"
 
