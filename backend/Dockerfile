@@ -40,6 +40,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Déf. du dossier de travail
 WORKDIR /var/www/html
 
+# Copie de tout le Backend
+COPY . .
+
 # Copie des fichiers Composer
 COPY composer.json composer.lock ./
 # Installation des Dép. PHP
