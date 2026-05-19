@@ -6,6 +6,18 @@ install:
 	@copy .\frontend\.env.example .\frontend\.env
 	@echo All done !
 
+install-backend:
+	@echo "Installing backend..."
+	@copy .\backend\.env.example .\backend\.env
+	@cd backend && composer install
+	@echo "Backend installed!"
+
+install-frontend:
+	@echo "Installing frontend..."
+	@copy .\frontend\.env.example .\frontend\.env
+	@cd frontend && npm install
+	@echo "Frontend installed!"
+
 start: 
 	@echo Build App...
 	@docker compose up -d --build
