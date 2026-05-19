@@ -18,7 +18,7 @@ services:
 
   backend:
     # Image backend publiée sur Docker Hub
-    image: vials512t/greenmarket:backendl-atest
+    image: vials512t/greenmarket:backend-latest
 
     container_name: green_market_backend
 
