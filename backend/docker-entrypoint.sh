@@ -25,13 +25,19 @@ echo ""
 # ─────────────────────────────────────────────
 #  1. .htaccess
 # ─────────────────────────────────────────────
+log "Création du dossier public..."
+mkdir -p /var/www/html/public
+
 log "Génération du .htaccess..."
 cat > /var/www/html/public/.htaccess << 'EOF'
 DirectoryIndex index.php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [QSA,L]
+
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>
 EOF
