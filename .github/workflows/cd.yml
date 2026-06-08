@@ -53,8 +53,11 @@ jobs:
                   username: ${{ secrets.DOCKERHUB_USERNAME }}
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-            - name: Install dependencies
-              run: make install-frontend
+            - name: Install dependencies & Set Env
+              run: |
+                  make install-frontend
+                  # On force la création du .env avec la bonne URL avant le build Docker
+                  echo "VITE_API_URL=${{ vars.VITE_API_URL }}" > ./frontend/.env
 
             - name: Build and push frontend image
               uses: docker/build-push-action@v6
@@ -62,7 +65,6 @@ jobs:
                   context: ./frontend
                   file: ./frontend/Dockerfile
                   push: true
-                  build-args: VITE_API_URL=${{ vars.VITE_API_URL }}
                   tags: |
                       vials512t/greenmarket:frontend-latest
                       vials512t/greenmarket:frontend-${{ github.sha }}
@@ -122,6 +124,9 @@ jobs:
                       cd /opt/app
 
                       cat > .env <<EOF
+                      APP_ENV=prod
+                      APP_SECRET=${JWT_SECRET}
+
                       NODE_ENV=${NODE_ENV}
                       PORT=${PORT}
 
