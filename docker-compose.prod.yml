@@ -1,88 +1,73 @@
 services:
-  frontend:
-    # Image frontend buildée et publiée sur Docker Hub
-    image: vials512t/greenmarket:frontend-latest
+    frontend:
+        # Image frontend buildée et publiée sur Docker Hub
+        image: vials512t/greenmarket:frontend-latest
 
-    # Nom du container
-    container_name: green_market_frontend
+        # Nom du container
+        container_name: green_market_frontend
 
-    # Redémarre automatiquement sauf arrêt manuel
-    restart: unless-stopped
+        # Redémarre automatiquement sauf arrêt manuel
+        restart: unless-stopped
 
-    ports:
-      # Expose le frontend sur le port 5173
-      - "5173:5173"
+        ports:
+            # Expose le frontend sur le port 5173
+            - '5173:5173'
 
-    depends_on:
-      - backend
+        env_file:
+            - .env
 
-  backend:
-    # Image backend publiée sur Docker Hub
-    image: vials512t/greenmarket:backend-latest
+        depends_on:
+            - backend
 
-    container_name: green_market_backend
+    backend:
+        # Image backend publiée sur Docker Hub
+        image: vials512t/greenmarket:backend-latest
 
-    restart: unless-stopped
+        container_name: green_market_backend
 
-    ports:
-      # Apache/PHP exposé sur le port 8000
-      - "8000:80"
+        restart: unless-stopped
 
-    environment:
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+        ports:
+            # Apache/PHP exposé sur le port 8000
+            - '8000:80'
 
-      # Nom du service Docker = hostname réseau interne
-      MYSQL_HOST: db
+        env_file:
+            - .env
 
-      MYSQL_PORT: 3306
+        depends_on:
+            - db
 
-      # Symfony APP_ENV recommandé
-      APP_ENV: prod
+    db:
+        image: mysql:8.0
 
-      # Désactive le debug Symfony
-      APP_DEBUG: 0
+        container_name: green_market_db
 
-    depends_on:
-      - db
+        restart: unless-stopped
 
-  db:
-    image: mysql:8.0
+        env_file:
+            - .env
 
-    container_name: green_market_db
+        volumes:
+            # Persistance des données MySQL
+            - db_data:/var/lib/mysql
 
-    restart: unless-stopped
+    phpmyadmin:
+        image: phpmyadmin:latest
 
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        container_name: green_market_phpmyadmin
 
-    volumes:
-      # Persistance des données MySQL
-      - db_data:/var/lib/mysql
+        restart: unless-stopped
 
-  phpmyadmin:
-    image: phpmyadmin:latest
+        env_file:
+            - .env
 
-    container_name: green_market_phpmyadmin
+        ports:
+            # phpMyAdmin accessible sur localhost:8080
+            - '8080:80'
 
-    restart: unless-stopped
-
-    environment:
-      PMA_HOST: db
-      PMA_USER: ${MYSQL_USER}
-      PMA_PASSWORD: ${MYSQL_PASSWORD}
-
-    ports:
-      # phpMyAdmin accessible sur localhost:8080
-      - "8080:80"
-
-    depends_on:
-      - db
+        depends_on:
+            - db
 
 volumes:
-  # Volume Docker persistant pour MySQL
-  db_data:
+    # Volume Docker persistant pour MySQL
+    db_data:
