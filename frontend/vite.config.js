@@ -1,20 +1,26 @@
-import react from '@vitejs/plugin-react';
-import {defineConfig} from 'vite';
+import react from "@vitejs/plugin-react";
+import path from "path";
+import { fileURLToPath } from "url";
+import { defineConfig } from "vite";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig({
     plugins: [react()],
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "./src"),
+        },
+    },
     server: {
-        host: true,
+        host: '0.0.0.0',
         port: 5173,
-        strictPort: true,
         watch: {
             usePolling: true,
-            interval: 100,
         },
-        // test: {
-        //     globals: true,
-        //     environment: 'jsdom',
-        //     setupFiles: './src/setupTesting.js',
-        // },
+        hmr: {
+            clientPort: 5173,
+        },
     },
 });
