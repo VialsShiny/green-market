@@ -1,10 +1,70 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { LuMenu } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
+import useToken from '../features/auth/hooks/useToken';
+
+function useDisplayLink(items, isLogged) {
+    return Object.entries(items).flatMap(([label, path]) => {
+        if (label === "notAuth") {
+            if (isLogged) return [];
+
+            return Object.entries(path).map(([subLabel, subPath]) => (
+                <li
+                    key={subLabel}
+                    className="hover:text-[#FFD6E0] transition-colors"
+                >
+                    <Link to={subPath}>{subLabel}</Link>
+                </li>
+            ));
+        } else if (label === "auth") {
+            if (!isLogged) return [];
+
+            return Object.entries(path).map(([subLabel, subPath]) => {
+                if (typeof subPath === "function") {
+                    return (
+                        <li key={subLabel}>
+                            <button onClick={subPath} className='cursor-pointer'>
+                                {subLabel}
+                            </button>
+                        </li>
+                    );
+                }
+
+                return (
+                    <li
+                        key={subLabel}
+                        className="hover:text-[#FFD6E0] transition-colors"
+                    >
+                        <Link to={subPath}>{subLabel}</Link>
+                    </li>
+                )
+            });
+        }
+
+        return (
+            <li
+                key={label}
+                className="hover:text-[#FFD6E0] transition-colors"
+            >
+                <Link to={path}>{label}</Link>
+            </li>
+        );
+    });
+}
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
-    const menuItems = { Home: '/', Products: '/products', Login: '/login', Register: '/register' };
+
+    const { isLogged, deleteToken } = useToken();
+
+    const menuItems = useMemo(() => ({
+        Home: '/',
+        Products: '/products',
+        notAuth: { Login: '/login', Register: '/register' },
+        auth: { Profile: '/profile', Logout: deleteToken }
+    }), [deleteToken]);
+
+    const navLinks = useMemo(() => useDisplayLink(menuItems, isLogged), [menuItems, isLogged]);
 
     return (
         <nav className="fixed left-1/2 -translate-x-1/2 w-[calc(100%-1.5rem)] md:max-w-6xl px-6 py-3 border-2 border-white border-t-0 rounded-b-[16px] bg-gradient-to-r from-[#DB4D72] to-[#E47995] text-[#FBE9ED] z-50 shadow-lg">
@@ -14,14 +74,7 @@ export default function Navbar() {
                 </strong>
 
                 <ul className="hidden md:flex gap-8 text-lg">
-                    {Object.entries(menuItems).map(([label, path]) => (
-                        <li
-                            key={label}
-                            className="hover:text-[#FFD6E0] transition-colors"
-                        >
-                            <Link to={path}>{label}</Link>
-                        </li>
-                    ))}
+                    {navLinks}
                 </ul>
 
                 <button
@@ -35,19 +88,9 @@ export default function Navbar() {
             </div>
 
             <ul
-                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-60 mt-4 flex flex-col gap-3' : 'max-h-0'
-                    }`}
+                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-60 mt-4 flex flex-col gap-3' : 'max-h-0'}`}
             >
-                {Object.entries(menuItems).map(([label, path]) => (
-                    <li
-                        key={label}
-                        className="hover:text-[#FFD6E0] transition-colors"
-                    >
-                        <Link to={path} onClick={() => setOpen(false)}>
-                            {label}
-                        </Link>
-                    </li>
-                ))}
+                {navLinks}
             </ul>
         </nav>
     );

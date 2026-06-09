@@ -8,7 +8,11 @@ import { useNavigate } from "react-router-dom";
 
 export default function Auth({ action = "login" }) {
   const navigate = useNavigate();
-  const { setToken } = useToken();
+  const { isLogged, setToken } = useToken();
+
+  useEffect(() => {
+    if (isLogged) navigate("/");
+  }, [isLogged])
 
   const [isLoading, setIsLoading] = useState(false);
   const [isReceivedData, setIsReceivedData] = useState(true);
@@ -31,8 +35,6 @@ export default function Auth({ action = "login" }) {
 
   // Redirection après succès
   useEffect(() => {
-    console.log(isValid);
-
     if (isValid) {
       const timer = setTimeout(() => {
         navigate("/");
@@ -55,8 +57,6 @@ export default function Auth({ action = "login" }) {
     const { isValid: responseIsValid, errors: responseErrors, token } = await handleSubmit(action, payload, setIsReceivedData, setToken);
 
     if (responseIsValid && token) {
-      console.log(responseIsValid);
-
       setToken(token); // Stock le token en cookie
       setIsValid(true);
       setErrors(null);
