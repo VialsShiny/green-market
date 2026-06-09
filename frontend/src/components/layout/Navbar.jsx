@@ -1,10 +1,10 @@
-import {useState} from 'react';
-import {LuMenu} from 'react-icons/lu';
-import {Link} from 'react-router-dom';
+import { useState } from 'react';
+import { LuMenu } from 'react-icons/lu';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
-    const menuItems = {Home: '/', Products: '/products'};
+    const menuItems = { Home: '/', Products: '/products', Login: '/login', Register: '/register' };
 
     return (
         <nav className="fixed left-1/2 -translate-x-1/2 w-[calc(100%-1.5rem)] md:max-w-6xl px-6 py-3 border-2 border-white border-t-0 rounded-b-[16px] bg-gradient-to-r from-[#DB4D72] to-[#E47995] text-[#FBE9ED] z-50 shadow-lg">
@@ -35,9 +35,8 @@ export default function Navbar() {
             </div>
 
             <ul
-                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-                    open ? 'max-h-60 mt-4 flex flex-col gap-3' : 'max-h-0'
-                }`}
+                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-60 mt-4 flex flex-col gap-3' : 'max-h-0'
+                    }`}
             >
                 {Object.entries(menuItems).map(([label, path]) => (
                     <li
