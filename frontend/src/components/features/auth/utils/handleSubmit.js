@@ -12,7 +12,8 @@ export async function handleSubmit(action, formData, setLoading, setToken) {
     return { isValid, errors };
   }
 
-  const apiUrl = `http://localhost:8000/api/auth/${action}`;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const apiUrl = `${backendUrl}/auth/${action}`;
 
   let data = null;
 
