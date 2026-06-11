@@ -4,12 +4,14 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/products')]
+#[OA\Tag(name: 'Products')]
 class ProductController extends AbstractController
 {
     private function formatProduct(Product $product): array
@@ -28,6 +30,25 @@ class ProductController extends AbstractController
         ];
     }
 
+    #[OA\Get(
+        path: '/api/products',
+        summary: 'Lister les produits',
+        tags: ['Products'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Liste des produits',
+                content: new OA\JsonContent(type: 'array', items: new OA\Items(
+                    properties: [
+                        new OA\Property(property: 'ref', type: 'string'),
+                        new OA\Property(property: 'title', type: 'string'),
+                        new OA\Property(property: 'price', type: 'number'),
+                        new OA\Property(property: 'category', type: 'string'),
+                    ]
+                ))
+            ),
+        ]
+    )]
     #[Route('', name: 'products_list', methods: ['GET'])]
     public function list(EntityManagerInterface $em): JsonResponse
     {
@@ -35,6 +56,18 @@ class ProductController extends AbstractController
         return $this->json(array_map([$this, 'formatProduct'], $products), 200);
     }
 
+    #[OA\Get(
+        path: '/api/products/{ref}',
+        summary: 'Détail d\'un produit',
+        tags: ['Products'],
+        parameters: [
+            new OA\Parameter(name: 'ref', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
+        ],
+        responses: [
+            new OA\Response(response: 200, description: 'Détail produit'),
+            new OA\Response(response: 404, description: 'Produit introuvable'),
+        ]
+    )]
     #[Route('/{ref}', name: 'products_show', methods: ['GET'])]
     public function show(string $ref, EntityManagerInterface $em): JsonResponse
     {
@@ -47,6 +80,29 @@ class ProductController extends AbstractController
         return $this->json($this->formatProduct($product), 200);
     }
 
+    #[OA\Post(
+        path: '/api/products',
+        summary: 'Créer un produit',
+        tags: ['Products'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['title', 'price', 'description', 'category'],
+                properties: [
+                    new OA\Property(property: 'title', type: 'string', example: 'Produit A'),
+                    new OA\Property(property: 'price', type: 'number', example: 29.99),
+                    new OA\Property(property: 'description', type: 'string'),
+                    new OA\Property(property: 'category', type: 'string', example: 'Electronics'),
+                    new OA\Property(property: 'image', type: 'string', nullable: true),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(response: 201, description: 'Produit créé'),
+            new OA\Response(response: 400, description: 'Erreur validation'),
+            new OA\Response(response: 403, description: 'Accès interdit'),
+        ]
+    )]
     #[Route('', name: 'products_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {

@@ -6,12 +6,14 @@ use App\Entity\OrderItem;
 use App\Entity\Product;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/orders')]
+#[OA\Tag(name: 'Orders')]
 class OrderController extends AbstractController
 {
     private function formatOrder(Order $order): array
@@ -28,6 +30,25 @@ class OrderController extends AbstractController
         ];
     }
 
+    #[OA\Get(
+        path: '/api/orders',
+        summary: 'Lister les commandes',
+        tags: ['Orders'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Liste des commandes',
+                content: new OA\JsonContent(type: 'array', items: new OA\Items(
+                    properties: [
+                        new OA\Property(property: 'ref', type: 'string'),
+                        new OA\Property(property: 'userId', type: 'integer'),
+                        new OA\Property(property: 'date', type: 'string', format: 'date'),
+                        new OA\Property(property: 'total', type: 'number'),
+                    ]
+                ))
+            ),
+        ]
+    )]
     #[Route('', name: 'orders_list', methods: ['GET'])]
     public function list(EntityManagerInterface $em): JsonResponse
     {
@@ -42,6 +63,19 @@ class OrderController extends AbstractController
         return $this->json(array_map([$this, 'formatOrder'], $orders), 200);
     }
 
+    #[OA\Get(
+        path: '/api/orders/{ref}',
+        summary: 'Détail d\'une commande',
+        tags: ['Orders'],
+        parameters: [
+            new OA\Parameter(name: 'ref', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
+        ],
+        responses: [
+            new OA\Response(response: 200, description: 'Détail commande'),
+            new OA\Response(response: 403, description: 'Accès interdit'),
+            new OA\Response(response: 404, description: 'Commande introuvable'),
+        ]
+    )]
     #[Route('/{ref}', name: 'orders_show', methods: ['GET'])]
     public function show(string $ref, EntityManagerInterface $em): JsonResponse
     {
@@ -59,6 +93,30 @@ class OrderController extends AbstractController
         return $this->json($this->formatOrder($order), 200);
     }
 
+    #[OA\Post(
+        path: '/api/orders',
+        summary: 'Créer une commande',
+        tags: ['Orders'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['products'],
+                properties: [
+                    new OA\Property(property: 'products', type: 'array', items: new OA\Items(
+                        properties: [
+                            new OA\Property(property: 'productId', type: 'integer'),
+                            new OA\Property(property: 'quantity', type: 'integer'),
+                        ]
+                    )),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(response: 201, description: 'Commande créée'),
+            new OA\Response(response: 400, description: 'Erreur validation'),
+            new OA\Response(response: 404, description: 'Produit introuvable'),
+        ]
+    )]
     #[Route('', name: 'orders_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
