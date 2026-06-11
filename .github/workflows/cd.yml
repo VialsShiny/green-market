@@ -99,6 +99,7 @@ jobs:
                   DB_PORT: ${{ vars.DB_PORT }}
                   JWT_EXPIRES_IN: ${{ vars.JWT_EXPIRES_IN }}
                   VITE_API_URL: ${{ vars.VITE_API_URL }}
+                  VITE_BACKEND_URL: ${{ vars.VITE_BACKEND_URL }}
 
                   MYSQL_USER: ${{ vars.MYSQL_USER }}
                   MYSQL_DATABASE: ${{ vars.MYSQL_DATABASE }}
@@ -116,7 +117,7 @@ jobs:
                   username: ${{ secrets.VPS_USER }}
                   key: ${{ secrets.VPS_SSH_KEY }}
                   passphrase: ${{ secrets.VPS_PASSPHRASE }}
-                  envs: NODE_ENV,PORT,MYSQL_USER,MYSQL_PASSWORD,MYSQL_DATABASE,MYSQL_ROOT_PASSWORD,DB_HOST,DB_USER,DB_NAME,DB_PORT,JWT_EXPIRES_IN,VITE_API_URL,DB_PASSWORD,DB_ROOT_PASSWORD,JWT_SECRET,DOCKERHUB_USERNAME,DOCKERHUB_TOKEN
+                  envs: NODE_ENV,PORT,MYSQL_USER,MYSQL_PASSWORD,MYSQL_DATABASE,MYSQL_ROOT_PASSWORD,DB_HOST,DB_USER,DB_NAME,DB_PORT,JWT_EXPIRES_IN,VITE_API_URL,VITE_BACKEND_URL,DB_PASSWORD,DB_ROOT_PASSWORD,JWT_SECRET,DOCKERHUB_USERNAME,DOCKERHUB_TOKEN
                   script: |
                       set -e
 
@@ -132,6 +133,7 @@ jobs:
                       MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
                       DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:${DB_PORT}/${MYSQL_DATABASE}
                       VITE_API_URL=${VITE_API_URL}
+                      VITE_BACKEND_URL=${VITE_BACKEND_URL}
                       APP_ENV=prod
                       EOF
 
