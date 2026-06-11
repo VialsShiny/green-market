@@ -1,51 +1,47 @@
-import Cookies from 'js-cookie';
-import { useEffect, useState } from 'react';
+import Cookies from "js-cookie";
+import { useCallback, useEffect, useState } from "react";
+import { tokenEvents } from "../events/tokenEvents";
 
-const TOKEN_KEY = 'authToken_GM-APP';
+const TOKEN_KEY = "authToken_GM-APP";
 const TOKEN_EXPIRATION = 7;
 
-export default function useToken(token = null) {
-  const [isLogged, setIsLogged] = useState(!!Cookies.get(TOKEN_KEY));
+const getToken = () => Cookies.get(TOKEN_KEY) || null;
 
+export default function useToken() {
+  const [token, setTokenState] = useState(() => getToken());
+
+  // S'abonner aux changements du token
   useEffect(() => {
-    console.log(isLogged);
-    const checkToken = () => setIsLogged(!!Cookies.get(TOKEN_KEY));
-    console.log(`scd: ${isLogged}`);
-    window.addEventListener('storage', checkToken);
-    return () => window.removeEventListener('storage', checkToken);
-  }, [isLogged]);
+    const unsubscribe = tokenEvents.subscribe(() => {
+      setTokenState(getToken());
+    });
 
-  const setToken = (newToken) => {
-    if (newToken) {
-      Cookies.set(TOKEN_KEY, newToken, {
-        expires: TOKEN_EXPIRATION,
-        secure: true,
-        sameSite: 'strict',
-      });
-      setIsLogged(true);
-    }
-  };
+    return unsubscribe;
+  }, []);
 
-  const getToken = () => {
-    return Cookies.get(TOKEN_KEY) || null;
-  };
+  const setToken = useCallback((newToken) => {
+    Cookies.set(TOKEN_KEY, newToken, {
+      expires: TOKEN_EXPIRATION,
+      secure: true,
+      sameSite: "strict",
+    });
 
-  const deleteToken = () => {
+    setTokenState(newToken);
+    tokenEvents.notify(); // Notifier tous les abonnés
+  }, []);
+
+  const deleteToken = useCallback(() => {
     Cookies.remove(TOKEN_KEY);
-    setIsLogged(false);
-  };
+    setTokenState(null);
+    tokenEvents.notify(); // Notifier tous les abonnés
+  }, []);
 
-  useEffect(() => {
-    if (token) {
-      setToken(token);
-    }
-  }, [token]);
+  const isLogged = !!token;
 
   return {
     isLogged,
+    token,
     setToken,
-    getToken,
     deleteToken,
-    token: getToken(),
   };
 }

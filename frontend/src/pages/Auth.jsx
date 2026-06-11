@@ -1,37 +1,18 @@
 import AuthFormField from "@/components/features/auth/AuthFormField";
 import useFormFields from "@/components/features/auth/hooks/useFormFields";
 import useToken from "@/components/features/auth/hooks/useToken";
-import AuthLoading from "@/components/features/auth/ui/AuthLoading";
 import { handleSubmit } from "@/components/features/auth/utils/handleSubmit";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Auth({ action = "login" }) {
   const navigate = useNavigate();
-  const { isLogged, setToken } = useToken();
+  const { setToken } = useToken();
 
-  useEffect(() => {
-    if (isLogged) navigate("/");
-  }, [isLogged])
-
-  const [isLoading, setIsLoading] = useState(false);
   const [isReceivedData, setIsReceivedData] = useState(true);
-  const [formData, setFormData] = useState({});
   const { formFields } = useFormFields(action);
   const [errors, setErrors] = useState(null);
   const [isValid, setIsValid] = useState(false);
-
-  useEffect(() => {
-    if (!action || !formFields) return setIsLoading(true);
-
-    // Initialiser formData avec les champs vides
-    const initialData = {};
-    Object.values(formFields).forEach(field => {
-      initialData[field.name] = "";
-    });
-    setFormData(initialData);
-    setIsLoading(false);
-  }, [action, formFields]);
 
   // Redirection après succès
   useEffect(() => {
@@ -43,6 +24,18 @@ export default function Auth({ action = "login" }) {
       return () => clearTimeout(timer);
     }
   }, [isValid, navigate]);
+
+  const initialFormData = useMemo(() => {
+    const data = {};
+
+    Object.values(formFields).forEach(field => {
+      data[field.name] = "";
+    });
+
+    return data;
+  }, [formFields]);
+
+  const [formData, setFormData] = useState(initialFormData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,9 +58,7 @@ export default function Auth({ action = "login" }) {
     }
   };
 
-  return isLoading ? (
-    <AuthLoading />
-  ) : (
+  return (
     <main className="min-h-screen auth px-12 py-8 flex">
       <div className="min-h-full flex self-center justify-center w-full">
         <div className="w-full max-w-md md:max-w-xl bg-white flex flex-col items-center justify-center rounded-lg shadow-lg p-8">
@@ -77,7 +68,7 @@ export default function Auth({ action = "login" }) {
           <form className="w-full max-w-sm md:max-w-md" onSubmit={onSubmit}>
             {Object.values(formFields).map((field) => (
               <AuthFormField
-                key={field.name || Math.round(Math.random() * 1000)}
+                key={field.name}
                 {...field}
                 value={formData[field.name] || ""}
                 onChange={handleChange}

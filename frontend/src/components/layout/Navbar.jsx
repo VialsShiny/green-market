@@ -3,7 +3,7 @@ import { LuMenu } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 import useToken from '../features/auth/hooks/useToken';
 
-function useDisplayLink(items, isLogged) {
+function displayLink(items, isLogged) {
     return Object.entries(items).flatMap(([label, path]) => {
         if (label === "notAuth") {
             if (isLogged) return [];
@@ -64,7 +64,7 @@ export default function Navbar() {
         auth: { Profile: '/profile', Logout: deleteToken }
     }), [deleteToken]);
 
-    const navLinks = useMemo(() => useDisplayLink(menuItems, isLogged), [menuItems, isLogged]);
+    const navLinks = useMemo(() => displayLink(menuItems, isLogged), [menuItems, isLogged]);
 
     return (
         <nav className="fixed left-1/2 -translate-x-1/2 w-[calc(100%-1.5rem)] md:max-w-6xl px-6 py-3 border-2 border-white border-t-0 rounded-b-[16px] bg-gradient-to-r from-[#DB4D72] to-[#E47995] text-[#FBE9ED] z-50 shadow-lg">

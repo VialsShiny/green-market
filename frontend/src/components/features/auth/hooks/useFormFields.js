@@ -1,28 +1,25 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 export default function useFormFields(action) {
-  const [formFields, setFormFields] = useState({
-    email: {},
-    password: {},
-  });
-
-  useEffect(() => {
+  const formFields = useMemo(() => {
     switch (action) {
       case "login":
-        setFormFields({
+        return {
           email: { label: "Email", type: "email", name: "email" },
           password: { label: "Password", type: "password", name: "password" },
-        });
-        break;
+        };
+
       case "register":
-        setFormFields({
+        return {
           name: { label: "Name", type: "text", name: "name" },
           email: { label: "Email", type: "email", name: "email" },
           password: { label: "Password", type: "password", name: "password" },
-        });
-        break;
+        };
+
+      default:
+        return {};
     }
   }, [action]);
 
-  return {formFields};
+  return { formFields };
 }

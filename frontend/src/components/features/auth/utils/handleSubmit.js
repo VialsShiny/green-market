@@ -1,11 +1,11 @@
 import { fetchData } from "@/components/services/Fetch";
-import useRequireFields from "../hooks/useRequireFields";
+import requireFields from "../hooks/requireFields";
 
 export async function handleSubmit(action, formData, setLoading, setToken) {
   setLoading(false);
   if (!action) return;
 
-  const { isValid, errors } = useRequireFields(action, formData);
+  const { isValid, errors } = requireFields(action, formData);
 
   if (Object.values(errors).some((error) => error !== null)) {
     setLoading(true);

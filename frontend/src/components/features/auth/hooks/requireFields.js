@@ -1,4 +1,4 @@
-export default function useRequireFields(action, formData) {
+export default function requireFields(action, formData) {
   if (!action) return null;
 
   const requiredFields = {
