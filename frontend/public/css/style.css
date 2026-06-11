@@ -91,6 +91,16 @@ nav {
     );
 }
 
+.auth {
+    background: linear-gradient(
+        -135deg,
+        #bbeb84 0%,
+        #f7d2da 35%,
+        #e6bcc7 85%,
+        #afdab5 100%
+    );
+}
+
 .bold {
     font-weight: bold;
 }

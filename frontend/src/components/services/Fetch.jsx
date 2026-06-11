@@ -10,7 +10,7 @@ export const fetchData = async (url, options = {}) => {
         });
 
         if (!res.ok) {
-            return res.json();
+            return { error: await res.json() };
         }
 
         return await res.json();

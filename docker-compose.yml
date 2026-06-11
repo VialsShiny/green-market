@@ -5,7 +5,7 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./:/frontend
+      - ./frontend:/app
       - /app/node_modules
   backend:
     build: ./backend/
