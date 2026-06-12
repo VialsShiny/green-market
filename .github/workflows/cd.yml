@@ -28,7 +28,7 @@ jobs:
               uses: docker/build-push-action@v6
               with:
                   context: ./backend
-                  file: ./backend/Dockerfile
+                  file: ./backend/Dockerfile.prod
                   push: true
                   tags: |
                       vials512t/greenmarket:backend-latest
@@ -63,7 +63,7 @@ jobs:
               uses: docker/build-push-action@v6
               with:
                   context: ./frontend
-                  file: ./frontend/Dockerfile
+                  file: ./frontend/Dockerfile.prod
                   push: true
                   tags: |
                       vials512t/greenmarket:frontend-latest

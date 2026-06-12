@@ -1,0 +1,92 @@
+# Dockerfile.prod
+# Symfony + Apache + PHP 8.3
+
+FROM php:8.3-apache
+
+# Dépendances système
+RUN apt-get update && apt-get install -y \
+    libicu-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    git \
+    curl \
+    && docker-php-ext-install \
+        pdo \
+        pdo_mysql \
+        intl \
+        zip \
+        opcache \
+    && rm -rf /var/lib/apt/lists/*
+
+# APCu
+RUN pecl install apcu \
+    && docker-php-ext-enable apcu
+
+RUN echo "apc.enable_cli=1" \
+    > /usr/local/etc/php/conf.d/apcu.ini
+
+# OPcache (PROD)
+RUN echo "opcache.enable=1\n\
+opcache.memory_consumption=256\n\
+opcache.interned_strings_buffer=16\n\
+opcache.max_accelerated_files=20000\n\
+opcache.revalidate_freq=0\n\
+opcache.validate_timestamps=0\n\
+opcache.save_comments=1\n\
+opcache.fast_shutdown=1\n" \
+> /usr/local/etc/php/conf.d/opcache.ini
+
+# Apache
+RUN a2enmod rewrite
+
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' \
+    /etc/apache2/sites-available/000-default.conf
+
+RUN echo '<Directory /var/www/html/public>\n\
+AllowOverride All\n\
+Require all granted\n\
+</Directory>' \
+>> /etc/apache2/sites-available/000-default.conf
+
+RUN echo "ServerName localhost" \
+>> /etc/apache2/apache2.conf
+
+# Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Dossier de travail
+WORKDIR /var/www/html
+
+# Installation dépendances PHP
+COPY composer.json composer.lock ./
+
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --prefer-dist \
+    --optimize-autoloader \
+    --classmap-authoritative \
+    --no-scripts
+
+# Copie du projet
+COPY . .
+
+# Permissions Symfony
+RUN mkdir -p var/cache var/log \
+    && chown -R www-data:www-data var
+
+# Cache Symfony
+ENV APP_ENV=prod
+
+RUN php bin/console cache:clear --env=prod || true
+RUN php bin/console cache:warmup --env=prod || true
+
+# Entrypoint
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
+CMD ["apache2-foreground"]
