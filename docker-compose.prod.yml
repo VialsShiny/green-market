@@ -8,6 +8,7 @@ services:
             - '443:443' # Port HTTPS (Optionnel pour l'instant, indispensable pour le SSL)
         volumes:
             - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./frontend/dist:/var/www/frontend:ro
         depends_on:
             - frontend
             - backend
