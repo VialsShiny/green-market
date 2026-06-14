@@ -91,25 +91,9 @@ jobs:
             - name: Deploy on VPS
               uses: appleboy/ssh-action@v1.0.3
               env:
-                  NODE_ENV: ${{ vars.NODE_ENV }}
-                  PORT: ${{ vars.PORT }}
-                  DB_HOST: ${{ vars.DB_HOST }}
-                  DB_USER: ${{ vars.DB_USER }}
-                  DB_NAME: ${{ vars.DB_NAME }}
-                  DB_PORT: ${{ vars.DB_PORT }}
-                  JWT_EXPIRES_IN: ${{ vars.JWT_EXPIRES_IN }}
-                  VITE_API_URL: ${{ vars.VITE_API_URL }}
-                  VITE_BACKEND_URL: ${{ vars.VITE_BACKEND_URL }}
-
-                  MYSQL_USER: ${{ vars.MYSQL_USER }}
-                  MYSQL_DATABASE: ${{ vars.MYSQL_DATABASE }}
-
-                  MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-                  MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-
-                  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-                  DB_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
-                  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+                  ENV_FRONTEND: ${{ secrets.ENV_FRONTEND_PROD }}
+                  ENV_BACKEND: ${{ secrets.ENV_BACKEND_PROD }}
+                  ENV_DB: ${{ secrets.ENV_DB_PROD }}
                   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
                   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
               with:
@@ -117,25 +101,17 @@ jobs:
                   username: ${{ secrets.VPS_USER }}
                   key: ${{ secrets.VPS_SSH_KEY }}
                   passphrase: ${{ secrets.VPS_PASSPHRASE }}
-                  envs: NODE_ENV,PORT,MYSQL_USER,MYSQL_PASSWORD,MYSQL_DATABASE,MYSQL_ROOT_PASSWORD,DB_HOST,DB_USER,DB_NAME,DB_PORT,JWT_EXPIRES_IN,VITE_API_URL,VITE_BACKEND_URL,DB_PASSWORD,DB_ROOT_PASSWORD,JWT_SECRET,DOCKERHUB_USERNAME,DOCKERHUB_TOKEN
+                  envs: ENV_FRONTEND,ENV_BACKEND,ENV_DB,DOCKERHUB_USERNAME,DOCKERHUB_TOKEN
                   script: |
                       set -e
 
                       mkdir -p /opt/app
                       cd /opt/app
 
-                      cat > .env <<EOF
-                      NODE_ENV=${NODE_ENV}
-                      PORT=${PORT}
-                      MYSQL_USER=${MYSQL_USER}
-                      MYSQL_PASSWORD=${MYSQL_PASSWORD}
-                      MYSQL_DATABASE=${MYSQL_DATABASE}
-                      MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-                      DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:${DB_PORT}/${MYSQL_DATABASE}
-                      VITE_API_URL=${VITE_API_URL}
-                      VITE_BACKEND_URL=${VITE_BACKEND_URL}
-                      APP_ENV=prod
-                      EOF
+                      # Injection propre des variables d'environnement
+                      echo "$ENV_FRONTEND" > .env.frontend.prod
+                      echo "$ENV_BACKEND" > .env.backend.prod
+                      echo "$ENV_DB" > .env.db.prod
 
                       mkdir -p nginx
                       cat > nginx/default.conf << 'EOF'
@@ -152,22 +128,18 @@ jobs:
                               proxy_set_header X-Forwarded-Proto $scheme;
                           }
 
-                          # Redirection vers le Frontend
+                          # Redirection vers le Frontend (Port 80 du container)
                           location / {
-                              proxy_pass http://green_market_frontend:5173;
+                              proxy_pass http://green_market_frontend:80;
                               proxy_set_header Host $host;
                               proxy_set_header X-Real-IP $remote_addr;
                               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                               proxy_set_header X-Forwarded-Proto $scheme;
-                              
-                              proxy_http_version 1.1;
-                              proxy_set_header Upgrade $http_upgrade;
-                              proxy_set_header Connection "upgrade";
                           }
                       }
                       EOF
 
-                      # 3. Lancement de Docker (déjà existant)
+                      # Lancement de Docker
                       docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_TOKEN}"
                       docker compose -f docker-compose.prod.yml pull
                       docker compose -f docker-compose.prod.yml up -d --remove-orphans
